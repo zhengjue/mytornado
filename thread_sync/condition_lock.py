@@ -41,12 +41,12 @@ class Couster(threading.Thread):
             time.sleep(1)
 
 if __name__ == "__main__":
-    cs=[]
-    p=Produce()
+    cs = []
+    p = Produce()
     for i in range(1,10):
         a=Couster()
         cs.append(a)
 
     p.start()
-    for i in range(1,10):
-        cs[i].start()
+    for i in cs:
+        i.start()
