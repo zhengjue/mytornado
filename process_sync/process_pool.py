@@ -14,7 +14,7 @@ def long_time_task(name):
 
 if __name__ == "__main__":
     print "Major process %s " % os.getpid()
-    P =multiprocessing.Pool()
+    P =multiprocessing.Pool()#默认为cpu数量的进程
     for i in range(10):
         P.apply_async(long_time_task,args=(i,))
 
