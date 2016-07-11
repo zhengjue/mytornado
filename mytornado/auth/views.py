@@ -11,7 +11,7 @@ class RegisterHandler(BaseHandler):
 
     def post(self):
         self.write("hello")
-        card_id = self.get_argument("card_id", "")
+        card_id=self.get_argument("card_id", "")
         username = self.get_argument("username", "")
         password = self.get_argument("password", "")
         password1 = self.get_argument("password1", "")
