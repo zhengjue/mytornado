@@ -13,11 +13,19 @@
         Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
         Plugin 'tpope/vim-fugitive'
         Plugin 'scrooloose/nerdtree'
+        Plugin 'jistr/vim-nerdtree-tabs'
         Plugin 'davidhalter/jedi-vim'
         Plugin 'majutsushi/tagbar'
+        Plugin 'jnurmine/Zenburn'
         Plugin 'altercation/vim-colors-solarized'
         Plugin 'Valloric/YouCompleteMe'
+        Plugin 'scrooloose/syntastic'
+        Plugin 'nvie/vim-flake8'
+        Plugin 'kien/ctrlp.vim'
+        Bundle 'tacahiroy/ctrlp-funky'
         Plugin 'vim-scripts/indentpython.vim'
+	Plugin 'SirVer/ultisnips'
+	Plugin 'honza/vim-snippets'
     "}
 
     "bundle end must required setup{ 
@@ -32,7 +40,7 @@
 	"set foldmethod=syntax
 	" Enable folding with the spacebar
 	nnoremap <space> za
-	let g:SimpylFold_docstring_preview=1 "查看折叠后的文档
+	let g:SimpylFold_docstring_preview=1
 "}
 
 "highlight设置超长行长{
@@ -52,109 +60,162 @@
 	let g:Powerline_symbols = 'fancy'
 "}
 
+" ctrlP setting{
+        let g:ctrlp_map = '<leader>p'
+	let g:ctrlp_cmd = 'CtrlP'
+	map <leader>f :CtrlPMRU<CR>
+	let g:ctrlp_custom_ignore = {
+	\ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
+	\ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
+	\ }
+	let g:ctrlp_working_path_mode=0
+	let g:ctrlp_match_window_bottom=1
+	let g:ctrlp_max_height=15
+	let g:ctrlp_match_window_reversed=0
+	let g:ctrlp_mruf_max=500
+	let g:ctrlp_follow_symlinks=1
+"}
 
-"其他设定{
-	" Use <leader>l to toggle display of whitespace
-	 nmap <leader>l :set list!<CR>
-	 " automatically change window's cwd to file's dir
-	 set autochdir
-     set nu
+"ctrlp-funky{
+	    nnoremap <Leader>fu :CtrlPFunky<Cr>
+	    " narrow the list down with a word under cursor
+	    nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+	    let g:ctrlp_funky_syntax_highlight = 1
+	    let g:ctrlp_extensions = ['funky']
+" }
 
-	 " I'm prefer spaces to tabs
-	 set tabstop=4
-	 set shiftwidth=4
-	 set expandtab
 
-	 " more subtle popup colors
-	 if has ('gui_running')
-	 highlight Pmenu guibg=#ccccccgui=bold
-	 endif
+"Other setting{
+	     " Use <leader>l to toggle display of whitespace
+	     nmap <leader>l :set list!<CR>
+	     "系统剪贴板
+	     set clipboard=unnamed
+	     " automatically change window's cwd to file's dir
+		 set autochdir
+	     set nu
+
+	     " PEP8
+	     au BufNewFile,BufRead *.py
+	     \ set tabstop=4
+	     \ set softtabstop=4
+	     \ set shiftwidth=4
+	     \ set textwidth=120
+	     \ set expandtab
+	     \ set autoindent
+	     \ set fileformat=unix
+
+	     au BufNewFile,BufRead *.js, *.html, *.css
+	     \ set tabstop=2
+	     \ set softtabstop=2
+	     \ set shiftwidth=2
+
+	     "indentpython.vim
+	     au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+	     "utf-8
+	     set encoding=utf-8
 "}
 
 "Nerrtree{
-     "文件浏览
-     map <F2> :NERDTreeToggle<CR>
+	"文件浏览
+	map <F2> :NERDTreeToggle<CR>
+	"ignore files in NERDTree
+	let NERDTreeIgnore=['\.pyc$', '\~$']
 "}
 
 "Highlight current line{
-     au WinLeave * set nocursorline nocursorcolumn
-     au WinEnter * set cursorline cursorcolumn
-     set cursorline cursorcolumn
-     "hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
-     hi CursorLine   cterm=NONE ctermbg=black ctermfg=grey guibg=darkred guifg=white
-     "hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
-     hi CursorColumn cterm=NONE ctermbg=black ctermfg=grey guibg=darkred guifg=white
+        au WinLeave * set nocursorline nocursorcolumn
+        au WinEnter * set cursorline cursorcolumn
+        set cursorline cursorcolumn
+        "hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+        hi CursorLine   cterm=NONE ctermbg=black ctermfg=grey guibg=darkred guifg=white
+        "hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+        hi CursorColumn cterm=NONE ctermbg=black ctermfg=grey guibg=darkred guifg=white
 "}
+
 "color seting{{{
-    "syntax enable
-    "if has('gui_running')
-    "    set background=light
-    "else
-    "    set background=dark
-    "endif                                                              
-    "colorscheme solarized                                                                                                        
-    "let g:solarized_termcolors=256                                     
-    "call togglebg#map("<F5>")                                          
+       syntax enable
+       if has('gui_running')
+       "    set background=light
+       colorscheme solarized
+       "else
+       "    set background=dark
+       "	colorscheme Zenburn
+       endif                                                              
+       "colorscheme solarized                                                                                                        
+       let g:solarized_termcolors=256                                     
+       call togglebg#map("<F5>")                                          
 "}}} 
 "
 
 " Tagbar{  
-    let g:tagbar_width=35                                           
-    let g:tagbar_autofocus=1
-    nnoremap <F6> :TagbarToggle<CR>
+       let g:tagbar_width=35                                           
+       let g:tagbar_autofocus=1
+       nnoremap <F6> :TagbarToggle<CR>
 "}  
 
 
 "split navigations{
-    set splitbelow
-    set splitright
-    nnoremap <C-J> <C-W><C-J>
-    nnoremap <C-K> <C-W><C-K>
-    nnoremap <C-L> <C-W><C-L>
-    nnoremap <C-H> <C-W><C-H>
+       set splitbelow
+       set splitright
+       nnoremap <C-J> <C-W><C-J>
+       nnoremap <C-K> <C-W><C-K>
+       nnoremap <C-L> <C-W><C-L>
+       nnoremap <C-H> <C-W><C-H>
 "}
 
 
 "YcmCompleter{
-    let g:ycm_autoclose_preview_window_after_completion=1
-    "map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-    set completeopt=longest,menu    "让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
-    autocmd InsertLeave * if pumvisible() == 0|pclose|endif "离开插入模式后自动关闭预览窗口
-    inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"    "回车即选中当前项
-    "上下左右键的行为 会显示其他信息
-    inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-    inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-    inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
-    inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+       let g:ycm_autoclose_preview_window_after_completion=1
+       "map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+       set completeopt=longest,menu    "让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
+       autocmd InsertLeave * if pumvisible() == 0|pclose|endif "离开插入模式后自动关闭预览窗口
+       inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"    "回车即选中当前项
+       "上下左右键的行为 会显示其他信息
+       inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+       inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+	inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+	inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+	"youcompleteme  默认tab  s-tab 和自动补全冲突
+	"let g:ycm_key_list_select_completion=['<c-n>']
+	let g:ycm_key_list_select_completion = ['<Down>']
+	"let g:ycm_key_list_previous_completion=['<c-p>']
+	let g:ycm_key_list_previous_completion = ['<Up>']
+	let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
+	"
+	let g:ycm_collect_identifiers_from_tags_files=1    " 开启 YCM
+	"基于标签引擎
+	let g:ycm_min_num_of_chars_for_completion=2    
+	"从第2个键入字符就开始罗列匹配项
+	let g:ycm_cache_omnifunc=0 " 禁止缓存匹配项,每次都重新生成匹配项
+	let g:ycm_seed_identifiers_with_syntax=1   " 语法关键字补全
+	nnoremap <F4> :YcmForceCompileAndDiagnostics<CR>  
+	"force recomile with syntastic
+	""nnoremap <leader>lo :lopen<CR>    "open locationlist
+	"nnoremap <leader>lc :lclose<CR>    "close locationlist
+	inoremap <leader><leader> <C-x><C-o>
+	""在注释输入中也能补全
+	let g:ycm_complete_in_comments = 1
+	"在字符串输入中也能补全
+	let g:ycm_complete_in_strings = 1
+	""注释和字符串中的文字也会被收入补全
+	let g:ycm_collect_identifiers_from_comments_and_strings = 0
+	nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+	" 跳转到定义处
+	let g:ycm_global_ycm_extra_conf="~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
+	let g:ycm_seed_identifiers_with_syntax=1    " 语法关键字补全
+"}
 
-    "youcompleteme  默认tab  s-tab 和自动补全冲突
-    "let g:ycm_key_list_select_completion=['<c-n>']
-    let g:ycm_key_list_select_completion = ['<Down>']
-    "let g:ycm_key_list_previous_completion=['<c-p>']
-    let g:ycm_key_list_previous_completion = ['<Up>']
-    let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
-    "
-    let g:ycm_collect_identifiers_from_tags_files=1    " 开启 YCM
-    "基于标签引擎
-    let g:ycm_min_num_of_chars_for_completion=1    "
-    "从第2个键入字符就开始罗列匹配项
-    let g:ycm_cache_omnifunc=0 " 禁止缓存匹配项,每次都重新生成匹配项
-    let g:ycm_seed_identifiers_with_syntax=1   " 语法关键字补全
-    nnoremap <F4> :YcmForceCompileAndDiagnostics<CR>  
-    "force recomile with syntastic
-    ""nnoremap <leader>lo :lopen<CR>    "open locationlist
-    "nnoremap <leader>lc :lclose<CR>    "close locationlist
-    inoremap <leader><leader> <C-x><C-o>
-    ""在注释输入中也能补全
-    let g:ycm_complete_in_comments = 1
-    "在字符串输入中也能补全
-    let g:ycm_complete_in_strings = 1
-    ""注释和字符串中的文字也会被收入补全
-    let g:ycm_collect_identifiers_from_comments_and_strings = 0
-
-    nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
-    " 跳转到定义处
-    let g:ycm_global_ycm_extra_conf="~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
+"syntastic setting{
+    let g:syntastic_check_on_open=1
+    let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_check_on_wq = 0
+    let g:syntastic_ignore_files=[".*\.py$"]
+    set statusline+=%#warningmsg#
+    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%*
 "}
 
 "python-mode{
@@ -350,7 +411,7 @@
      "4 auto complete seting{
         "4.1 Completion{
             "Turn on code completion support in the 
-            let g:pymode_rope_completion = 1
+            let g:pymode_rope_completion = 0
 
             "Turn on autocompletion when typing a period
             let g:pymode_rope_complete_on_dot = 1
@@ -471,3 +532,36 @@
             let g:pymode_syntax_docstrings = g:pymode_syntax_all
      "}
 "}
+
+"jedi-vim{
+    let g:jedi#auto_initialization = 1
+    let g:jedi#auto_vim_configuration = 1
+    let g:jedi#use_tabs_not_buffers = 1
+    let g:jedi#use_splits_not_buffers = "left"
+    let g:jedi#popup_on_dot = 1
+
+    let g:jedi#popup_select_first = 1
+
+    let g:jedi#show_call_signatures = "1"
+    let g:jedi#goto_command = "d" 
+
+    let g:jedi#goto_assignments_command = "g" 
+    let g:jedi#goto_definitions_command = "" 
+    let g:jedi#documentation_command = "K" 
+    let g:jedi#usages_command = "n" 
+    let g:jedi#completions_command = "" 
+    let g:jedi#rename_command = "r"
+
+    let g:jedi#completions_enabled = 1
+"}
+
+
+"python with virtualenv support
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+EOF
