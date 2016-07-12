@@ -1,6 +1,5 @@
 # _*_ coding:utf-8 _*_
 from base import BaseHandler
-from auth.models import User
 from common.utils import md5
 from auth import dao
 
@@ -11,7 +10,7 @@ class RegisterHandler(BaseHandler):
 
     def post(self):
         self.write("hello")
-        card_id=self.get_argument("card_id", "")
+        card_id = self.get_argument("card_id", "")
         username = self.get_argument("username", "")
         password = self.get_argument("password", "")
         password1 = self.get_argument("password1", "")
@@ -37,22 +36,20 @@ class RegisterHandler(BaseHandler):
 
 
 class LoginHandler(BaseHandler):
+
     def get(self):
-        self.render("auth/login.html")  # 相对于templater_pat
+        err_msg = ""
+        self.render("auth/login.html", err_msg=err_msg)  # 相对于templater_pat
 
     def post(self):
+        err_msg = ""
         username = self.get_argument("username", "")
         password = self.get_argument("password", "")
 
         user = dao.get_user(username)
-        if not user:
-            self.write("user is not exist")
-            self.render("auth/login.html")  # 相对于templater_pat
-            return
-
-        if user.password != md5(password):
-            self.write("passwd is incorrect")
-            self.render("auth/login.html")  # 相对于templater_pat
+        if not user or user.password != md5(password):
+            err_msg = "user do not match password"
+            self.render("auth/login.html", err_msg=err_msg)  # 相对于templater_pat
             return
 
         self.set_cookie("user", user.username)
