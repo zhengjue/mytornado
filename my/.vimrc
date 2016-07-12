@@ -7,9 +7,9 @@
         Plugin 'gmarik/vundle'
     "}
     "user Plug install{
-        "Plugin 'klen/python-mode'
+        Plugin 'klen/python-mode'
         ""code folding
-        Plugin 'tmhedberg/SimpylFold' "折叠
+        "Plugin 'tmhedberg/SimpylFold' "折叠
         Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
         Plugin 'tpope/vim-fugitive' "git 支持
         Plugin 'scrooloose/nerdtree' "文件树目录
@@ -25,10 +25,10 @@
 
         Plugin 'scrooloose/syntastic' "所有语言语法检查
 	Plugin 'scrooloose/nerdcommenter' "快速添加取消注释
-	Plugin 'hdima/python-syntax' "python 语法
-	Plugin 'kevinw/pyflakes-vim' "python 语法检查
-	Plugin 'tell-k/vim-autopep8' "对python文件自动pep8格式化
-        Plugin 'nvie/vim-flake8' "支持pep8
+	"Plugin 'hdima/python-syntax' "python 语法
+	"Plugin 'kevinw/pyflakes-vim' "python 语法检查
+	"Plugin 'tell-k/vim-autopep8' "对python文件自动pep8格式化
+        "Plugin 'nvie/vim-flake8' "支持pep8
 	Plugin 'kien/ctrlp.vim' "杀手级, 重新定义了编辑器打开文件的方式
         Plugin 'tacahiroy/ctrlp-funky' "ctrlp增强工具
 	Plugin 'Lokaltog/vim-easymotion'  "杀手级跳转
@@ -85,10 +85,10 @@
 
 "'快速插入代码片段 SirVer/ultisnips{
 	"Bundle 'SirVer/ultisnips'
-	let g:UltiSnipsExpandTrigger = '<s-t>'
-	let g:UltiSnipsJumpForwardTrigger = '<s-b>'
-	let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
-	let g:UltiSnipsListSnippets="<c-e> "
+	let g:UltiSnipsExpandTrigger = '<S-t>'
+	let g:UltiSnipsJumpForwardTrigger = '<S-b>'
+	let g:UltiSnipsJumpBackwardTrigger='<S-tab>'
+	let g:UltiSnipsListSnippets='<C-C>'
 	""'定义存放代码片段的文件夹 .vim/snippets下，使用自定义和默认的，将会的到全局，有冲突的会提示
 	let g:UltiSnipsSnippetDirectories=['snippets', 'bundle/ultisnips/UltiSnips']
 "}
@@ -131,17 +131,17 @@
 	" PEP8
 	au BufNewFile,BufRead *.py
 		\set tabstop=4
-		\ set softtabstop=4
-		\ set shiftwidth=4
-		\ set textwidth=120
-		\ set expandtab
-		\ set autoindent
-		\ set fileformat=unix
+		\set softtabstop=4
+		\set shiftwidth=4
+		\set textwidth=120
+		\set expandtab
+		\set autoindent
+		\set fileformat=unix
 
 	au BufNewFile,BufRead *.js, *.html, *.css
-		\ set tabstop=2
-		\ set softtabstop=2
-		\ set shiftwidth=2
+		\set tabstop=2
+		\set softtabstop=2
+		\set shiftwidth=2
 
 	"indentpython.vim
 	highlight BadWhitespace ctermbg=red guibg=red
@@ -395,31 +395,329 @@
 	    let g:jedi#popup_select_first = 1
 
 	    let g:jedi#show_call_signatures = "1"
-	    let g:jedi#goto_command = "d"
+	    "let g:jedi#goto_command = "d"
 
 	    let g:jedi#goto_assignments_command = "g"
 	    let g:jedi#goto_definitions_command = ""
 	    let g:jedi#documentation_command = "K"
 	    let g:jedi#usages_command = "n"
 	    let g:jedi#completions_command = ""
-	    let g:jedi#rename_command = "r"
+	    "let g:jedi#rename_command = "r"
 
 	    let g:jedi#completions_enabled = 1
 "}}}
 
+"python-mode{
+     "2 python mode seting{
+         "2.1 common function{
+            "Turn on the whole plugin
+            let g:pymode = 1
+            "Turn off plugin's warnings
+            let g:pymode_warnings = 1
+            "Add paths to `sys.path`,Value is list of path's strings.
+            let g:pymode_paths = []
+            "Trim unused white spaces on save
+            let g:pymode_trim_whitespaces = 1
+            "Setup default python options
+            let g:pymode_options = 1
+            "Setup max line length
+            let g:pymode_options_max_line_length = 120
+            "Enable colorcolumn display at max_line_length
+            let g:pymode_options_colorcolumn = 1
+            "Setup pymode |quickfix| window
+            let g:pymode_quickfix_minheight = 3
+            let g:pymode_quickfix_maxheight = 6
+         "}
 
-"python with virtualenv support
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
+         "2.2 Python version{
+            "Values are `python`, `python3`, `disable`. If value set to `disable` most python-features of **pymode** will be disabled. Set value to `python3` if you are working with python3 projects. You could use |exrc|
+            let g:pymode_python = 'python'
+         "}
 
-"Run pythoon
-au BufRead *.py map <buffer> <F10> :w<CR>:!/usr/bin/env python % <CR>
+         "2.3 Python indentation{
+            "Enable pymode indentation
+            let g:pymode_indent = 1
+         "}
 
-"kevinw/pyflakes-vim
-let g:pyflakes_use_quickfix = 1
+         "2.4 Python folding{
+            "Enable pymode folding
+            let g:pymode_folding = 1
+         "}
+
+         "2.5 Vim motion{
+              "`C` — means class
+              "`M` — means method or function
+              "================  ============================
+              "Key               Command
+              "================  ============================
+              "[[                Jump to previous class or function (normal, visual, operator modes)
+              "]]                Jump to next class or function  (normal, visual, operator modes)
+              "[M                Jump to previous class or method (normal, visual, operator modes)
+              "]M                Jump to next class or method (normal, visual, operator modes)
+              "aC                Select a class. Ex: vaC, daC, yaC, caC (normal, operator modes)
+              "iC                Select inner class. Ex: viC, diC, yiC, ciC (normal, operator modes)
+              "aM                Select a function or method. Ex: vaM, daM, yaM, caM (normal, operator modes)
+              "iM                Select inner function or method. Ex: viM, diM, yiM, ciM (normal, operator modes)
+              "================  ============================
+              "
+            "Enable pymode-motion
+            let g:pymode_motion = 1
+         "}
+
+         "2.6 Show documentation{
+            "Commands:
+            "	*:PymodeDoc* <args> — show documentation
+            "Turns on the documentation script
+            let g:pymode_doc = 1
+            "Bind keys to show documentation for current word (selection)
+            let g:pymode_doc_bind = 'K'
+         "}
+
+         "2.6 Support virtualenv{
+            "Commands:
+            "	*:PymodeVirtualenv* <path> -- Activate virtualenv (path is related to
+            "	current working directory)
+            "Enable automatic virtualenv detection
+            let g:pymode_virtualenv = 1
+            "Set path to virtualenv manually
+            let g:pymode_virtualenv_path = $VIRTUAL_ENV
+         "}
+
+         "2.7 Run code{
+            "Commands:
+            "	*:PymodeRun* -- Run current buffer or selection
+            "Turn on the run code script
+            let g:pymode_run = 1
+            "Binds keys to run python code
+            let g:pymode_run_bind = '<Leader>r'
+            au BufRead *.py map <buffer> <F10> :w<CR>:!/usr/bin/env python % <CR>
+         "}
+
+         "2.8 Breakpoints {
+            "Enable functionality
+            let g:pymode_breakpoint = 1
+            "Bind keys
+            let g:pymode_breakpoint_bind = '<Leader>b'
+            "Manually set breakpoint command (leave empty for automatic detection)
+            let g:pymode_breakpoint_cmd = ''
+         "}
+     "}
+
+     "3 Code checking{
+        "3.0 Turn on code checking{
+            let g:pymode_lint = 1
+
+            "Check code on every save (if file has been modified)  *'g:pymode_lint_on_write'*
+            let g:pymode_lint_on_write = 1
+
+            "Check code on every save (every)
+            let g:pymode_lint_unmodified = 0
+
+            "Check code when editing (on the fly)
+            let g:pymode_lint_on_fly = 0
+
+            "Show error message if cursor placed at the error line
+            let g:pymode_lint_message = 1
+
+            "Default code checkers (you could set several)
+            "Values may be chosen from: `pylint`, `pep8`, `mccabe`, `pep257`, `pyflakes`.
+            let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
+
+            "Skip errors and warnings
+            "E.g. "E501,W002", "E2,W" (Skip all Warnings and Errors that starts with E2) and etc
+            let g:pymode_lint_ignore = "E501,W"
+
+            "Select some error or warnings.
+            "By example you disable all warnings starting from 'W', but want to see warning
+            "'W0011' and warning 'W430'
+            let g:pymode_lint_select = "E501,W0011,W430"
+
+            "Sort errors by relevance
+            "If not empty, errors will be sort by defined relevance
+            "E.g. let g:pymode_lint_sort = ['E', 'C', 'I']  " Errors first 'E',
+            "after them 'C' and ...
+            let g:pymode_lint_sort = []
+
+            "Auto open cwindow (quickfix) if any errors have been found
+            let g:pymode_lint_cwindow = 1
+
+            "Place error |signs|
+            let g:pymode_lint_signs = 1
+
+            "Definitions for |signs|
+            let g:pymode_lint_todo_symbol = 'WW'
+            let g:pymode_lint_comment_symbol = 'CC'
+            let g:pymode_lint_visual_symbol = 'RR'
+            let g:pymode_lint_error_symbol = 'EE'
+            let g:pymode_lint_info_symbol = 'II'
+            let g:pymode_lint_pyflakes_symbol = 'FF'
+        "}
+
+        "3.1 Set code checkers options{
+            "Set PEP8 options
+            let g:pymode_lint_options_pep8 ={'max_line_length': g:pymode_options_max_line_length}
+            "Set Pyflakes options
+            let g:pymode_lint_options_pyflakes = { 'builtins': '_' }
+            "Set mccabe options
+            let g:pymode_lint_options_mccabe = { 'complexity': 12 }
+            "Set pep257 options
+            let g:pymode_lint_options_pep257 = {}
+            "Set pylint options
+            let g:pymode_lint_options_pylint ={'max-line-length': g:pymode_options_max_line_length}
+        "}
+
+        "3.2 Rope support ~{
+            "Pymode supports Rope refactoring operations, code completion and code assists.
+
+            "Commands:
+              "|:PymodeRopeAutoImport| -- Resolve import for element under cursor
+              "|:PymodeRopeModuleToPackage| -- Convert current module to package
+              "|:PymodeRopeNewProject| -- Open new Rope project in current working directory
+              "|:PymodeRopeRedo| -- Redo changes from last refactoring
+              "|:PymodeRopeRegenerate| -- Regenerate the project cache
+              "|:PymodeRopeRenameModule| -- Rename current module
+              "|:PymodeRopeUndo| -- Undo changes from last refactoring
+
+            "Turn on the rope script
+            let g:pymode_rope = 0
+
+            "Enable searching for |.ropeproject| in parent directories
+            let g:pymode_rope_lookup_project = 0
+
+            "You can also manually set the rope project directory. If not specified rope will use the current directory.
+            let g:pymode_rope_project_root = ""
+
+            let g:pymode_rope_ropefolder='.ropeproject'
+
+            "Leave empty to disable the key binding
+            let g:pymode_rope_show_doc_bind = '<C-c>d'
+
+            "Regenerate project cache on every save (if file has been modified)
+            let g:pymode_rope_regenerate_on_write = 1
+         "}
+     "}
+
+     "4 auto complete seting{
+        "4.1 Completion{
+            "Turn on code completion support in the
+            let g:pymode_rope_completion = 1
+
+            "Turn on autocompletion when typing a period
+            let g:pymode_rope_complete_on_dot = 1
+
+            "Keymap for autocomplete
+            let g:pymode_rope_completion_bind = '<C-Space>'
+
+            "Extended autocompletion (rope could complete objects which have not been imported) from project
+            let g:pymode_rope_autoimport = 1
+
+            "Load modules to autoimport by default
+            let g:pymode_rope_autoimport_modules = ['os', 'shutil', 'datetime']
+
+            "Offer to unresolved import object after completion.
+            let g:pymode_rope_autoimport_import_after_complete = 1
+        "}
+
+        "4.2 Find definition {
+            "By default when you press *<C-C>g* on any object in your code you will be moved to definition
+
+            "Leave empty for disable key binding.
+            let g:pymode_rope_goto_definition_bind = '<C-c>g'
+
+            "Command for open window when definition has been found
+            "Values are (`e`, `new`, `vnew`)
+            let g:pymode_rope_goto_definition_cmd = 'new'
+        "}
+
+        "4.3 Refactoring{
+            "Keymap for rename method/function/class/variables under cursor
+            let g:pymode_rope_rename_bind = '<C-c>rr'
+
+            "Rename a current module/package
+            "Keymap for rename current module
+            let g:pymode_rope_rename_module_bind = '<C-c>r1r'
+
+            let g:pymode_rope_organize_imports_bind = '<C-c>ro'
+
+            "Insert import for current word under cursor    *'g:pymode_rope_autoimport_bind'*
+            "Should be enabled |'g:pymode_rope_autoimport'|
+            let g:pymode_rope_autoimport_bind = '<C-c>ra'
+
+            "Convert module to package ~
+            "Keybinding:
+            let g:pymode_rope_module_to_package_bind = '<C-c>r1p'
+
+            "Extract method/variable ~
+            let g:pymode_rope_extract_method_bind = '<C-c>rm'
+            let g:pymode_rope_extract_variable_bind = '<C-c>rl'
+
+            "Use function ~
+            let g:pymode_rope_use_function_bind = '<C-c>ru'
+
+            "Move method/fields ~
+            let g:pymode_rope_move_bind = '<C-c>rv'
+
+            "Change function signature
+            let g:pymode_rope_change_signature_bind = '<C-c>rs'
+        "}
+
+        "4.4 Undo/Redo changes {
+            "Commands:
+            "*:PymodeRopeUndo* -- Undo last changes in the project
+            "*:PymodeRopeRedo* -- Redo last changes in the projec
+        "}
+     "}
+
+     "5. Syntax{ ~
+            "Turn on pymode syntax
+            let g:pymode_syntax = 1
+
+            "Slower syntax synchronization that is better at handling code blocks in
+            "docstrings. Consider disabling this on slower hardware
+            let g:pymode_syntax_slow_sync = 1
+
+
+            "Enable all python highlights
+            let g:pymode_syntax_all = 1
+
+            "Highlight "print" as a function
+            let g:pymode_syntax_print_as_function = 1
+
+            "Highlight "async/await" keywords
+            let g:pymode_syntax_highlight_async_await = g:pymode_syntax_all
+
+            "Highlight '=' operator
+            let g:pymode_syntax_highlight_equal_operator = g:pymode_syntax_all
+
+            "Highlight '*' operator
+            let g:pymode_syntax_highlight_stars_operator = g:pymode_syntax_all
+
+            "Highlight 'self' keyword
+            let g:pymode_syntax_highlight_self = g:pymode_syntax_all
+
+            "Highlight indent's errors
+            let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+
+            "Highlight space's errors
+            let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+            "Highlight string formatting
+            let g:pymode_syntax_string_formatting = g:pymode_syntax_all
+            let g:pymode_syntax_string_format = g:pymode_syntax_all
+            let g:pymode_syntax_string_templates = g:pymode_syntax_all
+            let g:pymode_syntax_doctests = g:pymode_syntax_all
+
+
+            "Highlight builtin objects (True, False, ...)
+            let g:pymode_syntax_builtin_objs = g:pymode_syntax_all
+
+            "Highlight builtin types (str, list, ...)
+            let g:pymode_syntax_builtin_types = g:pymode_syntax_all
+
+            "Highlight exceptions (TypeError, ValueError, ...)
+            let g:pymode_syntax_highlight_exceptions = g:pymode_syntax_all
+
+            "Highlight docstrings as pythonDocstring (otherwise as pythonString)
+            let g:pymode_syntax_docstrings = g:pymode_syntax_all
+     "}
+"}
