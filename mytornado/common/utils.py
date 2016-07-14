@@ -23,8 +23,11 @@ def make_card_id():
     db = conn.office
     card_coll = db.card_id
 
-    # card_coll.save({"card_id", 10000})
+    # card_coll.save({"card_id": 10000})
+    # old method
     new_id = card_coll.find_and_modify(update={"$inc": {"card_id": 1}}, new=True).get("card_id")
+    #  new_id = card_coll.find_and_modify(update={"$inc": {"card_id": 1}}, upsert=True).get("card_id")
+    #  new_id = card_coll.find_and_modify(update={"$inc": {"card_id": 1}}, upsert=True)["card_id"]
     print new_id
     return new_id
 
