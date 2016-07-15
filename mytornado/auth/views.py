@@ -2,6 +2,7 @@
 from base import BaseHandler
 from common.utils import md5, make_card_id
 from auth import dao
+from auth import enums
 import json
 
 
@@ -36,7 +37,7 @@ class RegisterHandler(BaseHandler):
         department = self.get_argument("department", "")
         position = self.get_argument("position", "")
 
-        if not (username and password and sex and age and department and position and mobile \
+        if not (username and password and sex and age and department and position and mobile
                 and emergency_contact and email):
             err_msg = "lack of arguments"
             params = locals()
@@ -83,6 +84,10 @@ class LoginHandler(BaseHandler):
         if not user or user.password != md5(password):
             err_msg = "user do not match password"
             self.render("auth/login.html", err_msg=err_msg, username=username)  # 相对于templater_pat
+            return
+
+        if user.status == enums.USER_STATUS_CHECK:
+            self.write("<h1>your acount is checking!!</h1>")
             return
 
         self.set_secure_cookie("user", user.username)

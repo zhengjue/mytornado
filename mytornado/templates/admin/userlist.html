@@ -1,5 +1,6 @@
 <html>
-    <head><title> register page</title></head>
+    <head><title> main page</title></head>
+    <script type="text/javascript" src="//misc.360buyimg.com/jdf/lib/jquery-1.6.4.js"></script>
     <body>
     	<a href="/admin/adduser/" target="blank">增加用户</a>
 	    <table border="1px" cellspacing="0">
@@ -14,21 +15,47 @@
 			<th><h3>紧急联系人</h3></th>
 			<th><h3>邮箱</h3></th>
 			<th><h3>权限</h3></th>
+			<th><h3>用户状态</h3></th>
+			<th><h3>操作</h3></th>
 		</tr>
 	    {% for user in user_list %}
 	    	<tr>
-			<th><h3>{{user.card_id}}</h3></th>
+			<th class="card_id"><h3>{{user.card_id}}</h3></th>
 			<th><h3>{{user.username}}</h3></th>
 			<th><h3>{{user.age}}</h3></th>
-			<th><h3>{{user.sex}}</h3></th>
+			<th><h3>{{sex_dict.get(user.sex)}}</h3></th>
 			<th><h3>{{user.department}}</h3></th>
 			<th><h3>{{user.position}}</h3></th>
 			<th><h3>{{user.mobile}}</h3></th>
 			<th><h3>{{user.emergency_contact}}</h3></th>
 			<th><h3>{{user.email}}</h3></th>
 			<th><h3>{{user.perm}}</h3></th>
+			<th><h3>{{user_status_dict.get(user.status)}}</h3></th>
+			<th><h3><input type="button" class="check_user" value="审核通过"></h3></th>
 		</tr>
 	    {% end %}
 	    </table>
+	<script>
+	$(".check_user").click(function(){
+			alert("88888")
+			var check_user  = "pass";
+			var card_obj = $(this).parent().parent().siblings(".card_id").find("h3")
+			var card_id = card_obj.html();
+		$.ajax({
+			type:"POST",
+			url:"/admin/checkuser/",
+			data:{"check_user":check_user,"card_id":card_id},
+			dataType:"json",
+			success:function(result){
+				if(result.status=="ok"){
+				window.location.href="/admin/";
+				}
+				else{
+				alert("username does not match password!!!")
+				}
+			}
+		});
+	});
+	</script>
     </body>
 </html>
