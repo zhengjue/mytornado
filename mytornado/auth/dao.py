@@ -45,8 +45,9 @@ def get_user_list():
     return user_list
 
 
-def update_user_by_card_id(card_id, **kwargs):
+def update_user_by_card_id(card_id, kwargs):
     user = get_user_by_card_id(card_id)
+
     for key, value in kwargs.iteritems():
         user[key] = value
     user.save()

@@ -122,15 +122,21 @@ class CheckUserHandler(AdminBaseHandler):
     def post(self):
         check_user = self.get_argument("check_user", "")
         card_id = self.get_argument("card_id", "")
-        print card_id
         if check_user == "pass":
-            auth_dao.update_user_by_card_id(card_id, {'status': auth_enums.USER_STATUS_NORMAL})
-            self.write(json.dumps({"status": "ok"}))
+            status = auth_enums.USER_STATUS_NORMAL
+        if check_user == "active":
+            status = auth_enums.USER_STATUS_NORMAL
+        elif check_user == "nopass":
+            status = auth_enums.USER_STATUS_NOPASS
+        elif check_user == "forbid":
+            status = auth_enums.USER_STATUS_FORBID
+        else:
+            self.write(json.dumps({"status": "faile", "err_msg": u"参数错误"}))
             return
 
-        if check_user == "nopass":
-            self.write(json.dumps({"status": "fail"}))
-            return
+        auth_dao.update_user_by_card_id(card_id, {'status': status})
+        self.write(json.dumps({"status": "ok"}))
+        return
 
     def check_xsrf_cookie(self):
         return
