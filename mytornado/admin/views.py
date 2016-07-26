@@ -5,6 +5,7 @@ from admin import dao
 from auth import dao as auth_dao
 from auth import enums as auth_enums
 import json
+from datetime import datetime
 
 
 class LoginHandler(AdminBaseHandler):
@@ -48,12 +49,54 @@ class AdminHandler(AdminBaseHandler):
             self.redirect("/admin/login/")
             return
 
-        user_list = auth_dao.get_user_list()
-        user_status_dict = auth_enums.USER_STATUS_DICT
+        self.render("admin/admin.html")
+
+
+class AdminUserListHandler(AdminBaseHandler):
+    def get(self):
+        sort = self.get_argument('sort', '-create_time')
+        search = self.get_argument('search', '')
+        search_value = self.get_argument('search_value', '')
+        start_time = self.get_argument('start_time', '')
+        end_time = self.get_argument('end_time', '')
+        page = self.get_argument('page', '')
+        admin_user = self.get_secure_cookie('admin_user')
+        if not admin_user:
+            self.redirect('/admin/login/')
+            return
+
+        user_list = auth_dao.get_user_list().order_by(sort)
+        if search_value:
+            if search == 'username':
+                user_list = user_list.filter(username__contains=search_value)
+            elif search == 'card_id':
+                user_list = user_list.filter(card_id__contains=search_value)
+            elif search == 'mobile':
+                user_list = user_list.filter(mobile__contains=search_value)
+            elif search == 'email':
+                user_list = user_list.filter(email__contains=search_value)
+            elif search == 'perm':
+                user_list = user_list.filter(perm__contains=search_value)
+            elif search == 'status':
+                user_list = user_list.filter(status__contains=search_value)
+            elif search == 'department':
+                user_list = user_list.filter(department__contains=search_value)
+            elif search == 'position':
+                user_list = user_list.filter(position__contains=search_value)
+
+        if start_time and end_time:
+            start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+            end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+
+            user_list = user_list.filter(create_time__gte=start_time).filter(create_time__lte=end_time)
+
+        #  user_list = Page(user_list, items_per_page=5, page=page)
+
         sex_dict = auth_enums.SEX_DICT
+        user_status_dict = auth_enums.USER_STATUS_DICT
         params = locals()
-        params.pop("self")
-        self.render("admin/userlist.html", **params)
+        params.pop('self')
+        self.render('admin/user_list.html', **params)
 
 
 class AddUserHandler(AdminBaseHandler):
@@ -73,7 +116,7 @@ class AddUserHandler(AdminBaseHandler):
         perm_list = auth_enums.ADMIN_USER_PERMISSION_LIST
         params = locals()
         params.pop("self")
-        self.render("admin/adduser.html", **params)
+        self.render("admin/add_user.html", **params)
 
     def post(self):
         card_id = self.get_argument("card_id", "")
@@ -95,14 +138,14 @@ class AddUserHandler(AdminBaseHandler):
             err_msg = "lack of arguments"
             params = locals()
             params.pop("self")
-            self.render("admin/adduser.html", **params)
+            self.render("admin/add_user.html", **params)
             return
 
         if password != password1:
             err_msg = "two times input password no match"
             params = locals()
             params.pop("self")
-            self.render("admin/adduser.html", **params)
+            self.render("admin/add_user.html", **params)
             return
 
         admin_user = auth_dao.get_user(username=username)
@@ -110,12 +153,12 @@ class AddUserHandler(AdminBaseHandler):
             err_msg = "user alreay exist"
             params = locals()
             params.pop("self")
-            self.render("admin/adduser.html", **params)
+            self.render("admin/add_user.html", **params)
             return
 
         auth_dao.add_user(username, password, age, sex, department, position, mobile, emergency_contact,
                           email, perm=perm)
-        self.redirect("/admin/")
+        self.redirect("/admin/user_list/")
 
 
 class CheckUserHandler(AdminBaseHandler):
@@ -124,12 +167,14 @@ class CheckUserHandler(AdminBaseHandler):
         card_id = self.get_argument("card_id", "")
         if check_user == "pass":
             status = auth_enums.USER_STATUS_NORMAL
-        if check_user == "active":
+        elif check_user == "active":
             status = auth_enums.USER_STATUS_NORMAL
         elif check_user == "nopass":
             status = auth_enums.USER_STATUS_NOPASS
         elif check_user == "forbid":
             status = auth_enums.USER_STATUS_FORBID
+        elif check_user == 'delete':
+            status = auth_enums.USER_STATUS_DELETE
         else:
             self.write(json.dumps({"status": "faile", "err_msg": u"参数错误"}))
             return
@@ -140,3 +185,13 @@ class CheckUserHandler(AdminBaseHandler):
 
     def check_xsrf_cookie(self):
         return
+
+
+class ChangeUserInfoHandler(AdminBaseHandler):
+    def get(self, card_id):
+        err_msg = ""
+        user = auth_dao.get_user_by_card_id(card_id)
+        perm_list = auth_enums.ADMIN_USER_PERMISSION_LIST
+        params = locals()
+        params.pop("self")
+        self.redirect("/admin/user_info.html", **params)
