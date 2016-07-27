@@ -1,6 +1,11 @@
 # _*_ coding:utf-8 _*_
 from base import BaseHandler
+<<<<<<< HEAD
 from common.utils import md5, make_card_id
+=======
+from auth.models import User
+from common.utils import md5
+>>>>>>> parent of a3a5d7b... vim
 from auth import dao
 import json
 
@@ -24,7 +29,12 @@ class RegisterHandler(BaseHandler):
         self.render("auth/register.html", **params)
 
     def post(self):
+<<<<<<< HEAD
         card_id = self.get_argument("card_id", "")
+=======
+        self.write("hello")
+        card_id=self.get_argument("card_id", "")
+>>>>>>> parent of a3a5d7b... vim
         username = self.get_argument("username", "")
         password = self.get_argument("password", "")
         password1 = self.get_argument("password1", "")
@@ -64,8 +74,8 @@ class RegisterHandler(BaseHandler):
 
 
 class LoginHandler(BaseHandler):
-
     def get(self):
+<<<<<<< HEAD
         user = self.get_current_user()
         err_msg = ""
         username = ""
@@ -73,16 +83,29 @@ class LoginHandler(BaseHandler):
             self.render("auth/login.html", err_msg=err_msg, username=username)  # 相对于templater_pat  # 相对于templater_pat
         else:
             self.redirect("/")
+=======
+        self.render("auth/login.html")  # 相对于templater_pat
+>>>>>>> parent of a3a5d7b... vim
 
     def post(self):
-        err_msg = ""
         username = self.get_argument("username", "")
         password = self.get_argument("password", "")
 
         user = dao.get_user(username)
+<<<<<<< HEAD
         if not user or user.password != md5(password):
             err_msg = "user do not match password"
             self.render("auth/login.html", err_msg=err_msg, username=username)  # 相对于templater_pat
+=======
+        if not user:
+            self.write("user is not exist")
+            self.render("auth/login.html")  # 相对于templater_pat
+            return
+
+        if user.password != md5(password):
+            self.write("passwd is incorrect")
+            self.render("auth/login.html")  # 相对于templater_pat
+>>>>>>> parent of a3a5d7b... vim
             return
 
         self.set_secure_cookie("user", user.username)
