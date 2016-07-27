@@ -1,6 +1,6 @@
 # _*_ coding:utf-8 _*_
 from base import BaseHandler
-from common.utils import md5
+from common.utils import md5, make_card_id
 from auth import dao
 import json
 
@@ -29,14 +29,15 @@ class RegisterHandler(BaseHandler):
         password = self.get_argument("password", "")
         password1 = self.get_argument("password1", "")
         age = self.get_argument("age", "")
-        sex = int(self.get_argument("sex", 0))
+        sex = int(self.get_argument("sex", 1))
         mobile = self.get_argument("mobile", "")
         emergency_contact = self.get_argument("emergency_contact", "")
         email = self.get_argument("email", "")
         department = self.get_argument("department", "")
         position = self.get_argument("position", "")
 
-        if not (username  and password and age and department and position and mobile and emergency_contact and email):
+        if not (username and password and sex and age and department and position and mobile \
+                and emergency_contact and email):
             err_msg = "lack of arguments"
             params = locals()
             params.pop("self")
@@ -84,7 +85,7 @@ class LoginHandler(BaseHandler):
             self.render("auth/login.html", err_msg=err_msg, username=username)  # 相对于templater_pat
             return
 
-        self.set_cookie("user", user.username)
+        self.set_secure_cookie("user", user.username)
         self.redirect("/")
 
 
@@ -107,7 +108,7 @@ class JsLoginHandler(BaseHandler):
             self.write(json.dumps({"status": "fail"}))
             return
 
-        self.set_cookie("user", "888")
+        self.set_secure_cookie("user", "888")
         self.write(json.dumps({"status": "ok"}))
 
     def check_xsrf_cookie(self):
