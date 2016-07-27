@@ -1,11 +1,12 @@
 # _*_ coding:utf-8 _*_
 from base import AdminBaseHandler
 from common.utils import md5, make_card_id
+from common.paginate import Page
 from admin import dao
 from auth import dao as auth_dao
 from auth import enums as auth_enums
-import json
 from datetime import datetime
+import json
 
 
 class LoginHandler(AdminBaseHandler):
@@ -90,7 +91,7 @@ class AdminUserListHandler(AdminBaseHandler):
 
             user_list = user_list.filter(create_time__gte=start_time).filter(create_time__lte=end_time)
 
-        #  user_list = Page(user_list, items_per_page=5, page=page)
+        user_list = Page(user_list, items_per_page=5, page=page)
 
         sex_dict = auth_enums.SEX_DICT
         user_status_dict = auth_enums.USER_STATUS_DICT
@@ -131,7 +132,7 @@ class AddUserHandler(AdminBaseHandler):
         department = self.get_argument("department", "")
         position = self.get_argument("position", "")
         perm = self.get_argument("perm", "")
-        #  perm_list = auth_enums.ADMIN_USER_PERMISSION_LIST
+        perm_list = auth_enums.ADMIN_USER_PERMISSION_LIST
 
         if not (username and password and sex and age and department and position and mobile
                 and emergency_contact and email and perm):
@@ -191,7 +192,15 @@ class ChangeUserInfoHandler(AdminBaseHandler):
     def get(self, card_id):
         err_msg = ""
         user = auth_dao.get_user_by_card_id(card_id)
-        perm_list = auth_enums.ADMIN_USER_PERMISSION_LIST
+        sex_dict = auth_enums.SEX_DICT
         params = locals()
         params.pop("self")
-        self.redirect("/admin/user_info.html", **params)
+        self.render("admin/user_info.html", **params)
+
+    def post(self, card_id):
+        mobile = self.get_argument("mobile", "")
+        department = self.get_argument("department", "")
+        position = self.get_argument("position", "")
+
+        auth_dao.update_user_by_card_id(card_id, {"department": department, "position": position, "mobile": mobile})
+        self.redirect("/admin/user_list/")

@@ -43,7 +43,7 @@
 		</tr>
 	    {% for user in user_list %}
 	    	<tr>
-			<th class="card_id"><h3><a href="/admin/change_user_info/{{user.card_id}}">{{user.card_id}}</a></h3></th>
+			<th class="card_id"><h3><a href="/admin/change_user_info/{{user.card_id}}/">{{user.card_id}}</a></h3></th>
 			<th><h3>{{user.username}}</h3></th>
 			<th><h3>{{user.create_time.strftime("%Y-%m-%d %H:%M:%S")}}</h3></th>
 			<th><h3>{{user.age}}</h3></th>
@@ -69,11 +69,22 @@
 		</tr>
 	    {% end %}
 	    </table>
+	    <div>
+		<h2>
+			第一页:<input type="button" class="page" name="first_page" value="{{ user_list.first_page }}"/>
+			{% if user_list.previous_page %}上一页: <input type="button" class="page" name="previous_page" value="{{ user_list.previous_page }}"/>{% end %}
+			当前页: <input type="button" id="current_page" class="page" name="page" value="{{ user_list.page }}"/>
+			{% if user_list.next_page %}下一页: <input type="button" class="page" name="next_page" value="{{ user_list.next_page }}"/>{%end %}
+			最后一页: <input type="button" class="page" name="last_page" value="{{ user_list.last_page }}"/>
+			跳转到第N页: <input type="text" id="to_page"  name="to_page" value="{{ user_list.page }}"/>
+			<input type="button" class="to_page" name="to_page" value="确定"/>
+		</h2>
+	    </div>
 	<script>
 	$(".check_user").click(function(){
 			var check_user  = $(this).attr("name");
-			console.log(name)
-			var card_obj = $(this).parent().parent().siblings(".card_id").find("h3")
+			console.log(check_user)
+			var card_obj = $(this).parent().parent().siblings(".card_id").find("h3").find("a")
 			console.log(card_obj)
 			var card_id = card_obj.html();
 		$.ajax({
@@ -97,7 +108,27 @@
 			var search_value = $(".search_value").val()
 			var start_time = $(".start_time").val()
 			var end_time = $(".end_time").val()
-			window.location.href="/admin/user_list/" + "?sort=" + sort + "&search=" + search	+ "&search_value=" + search_value + "&start_time=" + start_time + "&end_time=" + end_time;
+			<!-- var page = $("#current_page").val() -->
+			alert(page)
+			window.location.href="/admin/user_list/" + "?sort=" + sort + "&search=" + search	+ "&search_value=" + search_value + "&start_time=" + start_time + "&end_time=" + end_time + "&page=" +page;
+	});
+	$(".page").click(function(){
+			var sort = $(".sort").val();
+			var search = $(".search").val()
+			var search_value = $(".search_value").val()
+			var start_time = $(".start_time").val()
+			var end_time = $(".end_time").val()
+			var page = $(this).val()
+			window.location.href="/admin/user_list/" + "?sort=" + sort + "&search=" + search	+ "&search_value=" + search_value + "&start_time=" + start_time + "&end_time=" + end_time + "&page=" +page;
+	});
+	$(".to_page").click(function(){
+			var sort = $(".sort").val();
+			var search = $(".search").val()
+			var search_value = $(".search_value").val()
+			var start_time = $(".start_time").val()
+			var end_time = $(".end_time").val()
+			var page = $("#to_page").val()
+			window.location.href="/admin/user_list/" + "?sort=" + sort + "&search=" + search	+ "&search_value=" + search_value + "&start_time=" + start_time + "&end_time=" + end_time + "&page=" +page;
 	});
 	</script>
     </body>

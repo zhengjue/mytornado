@@ -20,6 +20,9 @@ class User(models.Document):  # 用户模型(普通，管理员)
     perm = models.StringField(choices=enums.ADMIN_USER_PERMISSION_LIST, required=False)  # 权限
     # 1，False | 2，True default=enums.NORMAL
     status = models.IntField(choices=enums.USER_STATUS_LIST, default=enums.USER_STATUS_CHECK, required=True)  # 性别
+    meta = {
+        "indexes": ["card_id", "username"]
+    }
 
 
 class Transaction(models.Document):  # 事物模型(请假，加薪等)

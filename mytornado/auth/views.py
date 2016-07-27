@@ -1,4 +1,5 @@
 # _*_ coding:utf-8 _*_
+import tornado.web
 from base import BaseHandler
 from common.utils import md5, make_card_id
 from auth import dao
@@ -126,3 +127,25 @@ class LogoutHandler(BaseHandler):
 
     def post(self):
         pass
+
+
+class InfoHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        login_user = self.get_current_user()
+        user = dao.get_user(login_user)
+        sex_dict = enums.SEX_DICT
+        params = locals()
+        params.pop("self")
+
+        self.render("auth/user_info.html", **params)
+
+    @tornado.web.authenticated
+    def post(self):
+        login_user = self.get_current_user()
+        user = dao.get_user(login_user)
+        mobile = self.get_argument("mobile", "")
+        emergency_contact = self.get_argument("emergency_contact", "")
+
+        dao.update_user_by_card_id(user.card_id, {"mobile": mobile, "emergency_contact": emergency_contact})
+        self.redirect("/member/")
