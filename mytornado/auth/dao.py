@@ -5,7 +5,7 @@ from common.utils import md5, make_card_id
 
 def add_user(username, password, age, sex, department, position, mobile, emergency_contact, email):
     user = User(
-        card_id=str(make_card_id()),
+        card_id=make_card_id(),
         username=username,
         password=md5(password),
         age=age,
@@ -26,10 +26,3 @@ def get_user(username):
         user = None
     return user
 
-
-def get_user_list():
-    try:
-        user_list = User.objects.all()
-    except:
-        user_list = None
-    return user_list

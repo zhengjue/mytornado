@@ -10,13 +10,6 @@ class BaseHandler(tornado.web.RequestHandler):
     """
 
     def get_current_user(self):
-        user = self.get_secure_cookie("user")
+        user = self.get_cookie("user")
         if user:
-            return user
-
-
-class AdminBaseHandler(tornado.web.RequestHandler):
-    def get_current_user(self):
-        user = self.get_secure_cookie("admin_user")
-        if user:
-            return user
+            return "user"
