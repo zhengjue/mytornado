@@ -4,11 +4,11 @@
 	    <a href="/transaction/add/">创建申请</a>
 	    {% for transaction in transaction_list %}
 	    	    <div style="border:1px solid red;width:400px;">
-			<p>类别: {{gettransaction.get(ttype)}}</p>
+			<p>类别: {{transaction_type_dict.get(transaction.ttype)}}</p>
 			<hr>
-			<p>标题: {{transaction.get(title)}}</p>
+			<p>标题: {{transaction.title}}</p>
 			<hr>
-			<p>内容: {{transaction.get(content)}}</p>
+			<p>内容: {{transaction.content}}</p>
 		    </div>
 		    <br/>
 	    {% end %}

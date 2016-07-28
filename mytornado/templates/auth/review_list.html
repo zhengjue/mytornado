@@ -1,6 +1,11 @@
 <html>
     <head><title>review  transaction list  page</title></head>
+    <script type="text/javascript" src="//misc.360buyimg.com/jdf/lib/jquery-1.6.4.js"></script>
     <body>
+	<div class='popup' style="display:none">
+		原因:<input id="reason" name="reason" />
+		<input type='button' class='review' name='nopass'/>
+	</div>
 	<table border='1px' cellspacing='0'>
 		<tr>
 
@@ -27,5 +32,48 @@
 		    <br/>
 		</tr>
 	    {% end %}
+
+	 <script>
+	$('.review').click(function(){
+	var action = $(this).attr("name");
+
+	if(action=='nopass' && !$(".popup").attr('name')){
+		$(".popup").show();
+		var obj1 = $(this).parent().parent().siblings('.transaction_id');
+		var obj_id1 = obj1.attr('name');
+		alert(obj_id1)
+		$(".popup").attr('name', obj_id1);
+	}
+	else{
+		var obj;
+		var obj_id;
+		var reason;
+		if(action=='pass'){
+			obj = $(this).parent().parent().siblings('.transaction_id');
+			obj_id = obj.attr('name');
+			reason = $('#reason').val();
+		}else{
+			obj_id = $('.popup').attr('name');
+			action = 'nopass';
+			reason = $('#reason').val();
+		}
+		$.ajax({
+			type: 'POST',
+			url: '/transaction/review_list/' ,
+			data: {'transaction_id': obj_id, 'action': action, 'reason': reason},
+			dataType: 'json',
+			success:function(result){
+				if(result.status=='ok') {
+					window.location.href='/transaction/review_list/';
+				}else{
+					alert('error');
+				}
+			}
+
+			});
+     }
+
+	});
+	 </script>
     </body>
 </html>

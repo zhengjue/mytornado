@@ -1,7 +1,7 @@
 # _*_ coding:utf-8 _*_
 import tornado.web
 from base import BaseHandler
-from common.utils import md5, make_card_id
+from common.utils import md5
 from auth import dao
 from auth import enums
 import json
@@ -206,3 +206,17 @@ class ReviewHandler(BaseHandler):
         params = locals()
         params.pop("self")
         self.render("auth/review_list.html", **params)
+
+    def check_xsrf_cookie(self):
+        return
+
+    def post(self):
+        transaction_id = self.get_argument("transaction_id", "")
+        action = self.get_argument("action", "")
+
+        if action == "pass":
+            dao.update_transaction_by_id(transaction_id, {"status": 1})
+        if action == "nopass":
+            dao.update_transaction_by_id(transaction_id, {"status": 0})
+        self.write({"status": "ok"})
+
