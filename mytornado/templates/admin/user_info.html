@@ -1,0 +1,20 @@
+<html>
+    <head><title> user info page</title></head>
+    <body>
+	    {% if err_msg %}
+	     <h1>{{err_msg}}</h1>
+	    {% end %}
+    <form action="." method="POST">
+            {% module xsrf_form_html() %}
+            <p> username: {{ user.username }}</p>
+            <p> age: {{ user.age }}</p>
+            <p> sex: {{ sex_dict.get(user.sex) }}</p>
+            <p> department: <input type='text' name="department" value="{{ user.department }}" /></p>
+            <p> position: <input type='text' name="position" value="{{ user.position }}"/></p>
+            <p> mobile: <input type='text' name="mobile" value="{{ user.mobile }}"/></p>
+            <p> emergency_contact: {{ user.emergency_contact }}</p>
+            <p> email: {{ user.email }}</p>
+            <p><input type='submit' value="更改" /></p>
+        </form>
+    </body>
+</html>

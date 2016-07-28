@@ -2,6 +2,11 @@
     <head><title> home page</title></head>
     <body>
             <p><input type='submit' id="logout" value="退出" onclick="delCookie()" /></p>
+	    <h2><a href="/member/">我的信息</a></h2>
+	    <h2><a href="/transaction/list/">我的申请</a></h2>
+	    {% if perm %}
+	    <h2><a href="/transaction/review_list/">审核列表</a></h2>
+	    {% end %}
             <script>
                 function getCookie(name)//取cookies函数
                 {

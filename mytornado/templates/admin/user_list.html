@@ -1,0 +1,135 @@
+<html>
+    <head><title> main page</title></head>
+    <script type="text/javascript" src="//misc.360buyimg.com/jdf/lib/jquery-1.6.4.js"></script>
+    <body>
+    	<a href="/admin/add_user/" target="blank">增加用户</a>
+	    <table border="1px" cellspacing="0">
+		    <div>
+			<select class="sort">
+				<option name="sort" {% if sort == "create_time" %} selected="selected" {% end %} value="create_time">时间正序</option>
+				<option name="sort" {% if sort == "-create_time" %} selected="selected" {% end %} value="-create_time">时间倒序</option>
+				<option name="sort" {% if sort == "age" %} selected="selected" {% end %} value="age">年龄正序</option>
+				<option name="sort" {% if sort == "-age" %} selected="selected" {% end %} value="-age">年龄倒序</option>
+			</select>
+			<select class="search">
+				<option name="card_id"  {% if search == "card_id" %} selected="selected" {% end %} value="card_id">工号</option>
+				<option name="username"  {% if search == "username" %} selected="selected" {% end %} value="username">用户名</option>
+				<option name="mobile"  {% if search == "mobile" %} selected="selected" {% end %} value="mobile">手机</option>
+				<option name="email"  {% if search == "email" %} selected="selected" {% end %} value="email">邮件</option>
+				<option name="perm"  {% if search == "perm" %} selected="selected" {% end %} value="perm">权限</option>
+				<option name="status"  {% if search == "status" %} selected="selected" {% end %} value="status">状态</option>
+				<option name="department"  {% if search == "department" %} selected="selected" {% end %} value="department">部门</option>
+				<option name="position"  {% if search == "position" %} selected="selected" {% end %} value="position">职位</option>
+			</select>
+			<input type="text" class="search_value" name="search_value"  value="{{ search_value }}"/>
+			开始时间:<input type="text" class="start_time" name="start_time"  value="{{ start_time }}"/>
+			结束时间:<input type="text" class="end_time" name="end_time"  value="{{ end_time }}"/>
+			<input type="button" class="sure" value="确定"/>
+		    </div>
+	    	<tr>
+			<th><h3>工号</h3></th>
+			<th><h3>姓名</h3></th>
+			<th><h3>创建时间</h3></th>
+			<th><h3>年龄</h3></th>
+			<th><h3>性别</h3></th>
+			<th><h3>部门</h3></th>
+			<th><h3>岗位</h3></th>
+			<th><h3>手机</h3></th>
+			<th><h3>紧急联系人</h3></th>
+			<th><h3>邮箱</h3></th>
+			<th><h3>权限</h3></th>
+			<th><h3>用户状态</h3></th>
+			<th><h3>操作</h3></th>
+		</tr>
+	    {% for user in user_list %}
+	    	<tr>
+			<th class="card_id"><h3><a href="/admin/change_user_info/{{user.card_id}}/">{{user.card_id}}</a></h3></th>
+			<th><h3>{{user.username}}</h3></th>
+			<th><h3>{{user.create_time.strftime("%Y-%m-%d %H:%M:%S")}}</h3></th>
+			<th><h3>{{user.age}}</h3></th>
+			<th><h3>{{sex_dict.get(user.sex)}}</h3></th>
+			<th><h3>{{user.department}}</h3></th>
+			<th><h3>{{user.position}}</h3></th>
+			<th><h3>{{user.mobile}}</h3></th>
+			<th><h3>{{user.emergency_contact}}</h3></th>
+			<th><h3>{{user.email}}</h3></th>
+			<th><h3>{{user.perm}}</h3></th>
+			<th><h3>{{user_status_dict.get(user.status)}}</h3></th>
+			{% if user.status == 2 %}
+			<th><h3><input type="button" class="check_user" value="通过" name="pass">
+				<input type="button" class="check_user" value="不通过" name="nopass"></h3></th>
+			{% elif user.status == 1 %}
+			<th><h3><input type="button" class="check_user" value="禁用" name="forbid">
+				<input type="button" class="check_user" value="删除" name="delete"></h3></th>
+			{% elif user.status == 4 %}
+			<th><h3><input type="button" class="check_user" value="启用" name="active"></h3></th>
+			{% else %}
+			<th><h3></h3></th>
+			{% end %}
+		</tr>
+	    {% end %}
+	    </table>
+	    <div>
+		<h2>
+			第一页:<input type="button" class="page" name="first_page" value="{{ user_list.first_page }}"/>
+			{% if user_list.previous_page %}上一页: <input type="button" class="page" name="previous_page" value="{{ user_list.previous_page }}"/>{% end %}
+			当前页: <input type="button" id="current_page" class="page" name="page" value="{{ user_list.page }}"/>
+			{% if user_list.next_page %}下一页: <input type="button" class="page" name="next_page" value="{{ user_list.next_page }}"/>{%end %}
+			最后一页: <input type="button" class="page" name="last_page" value="{{ user_list.last_page }}"/>
+			跳转到第N页: <input type="text" id="to_page"  name="to_page" value="{{ user_list.page }}"/>
+			<input type="button" class="to_page" name="to_page" value="确定"/>
+		</h2>
+	    </div>
+	<script>
+	$(".check_user").click(function(){
+			var check_user  = $(this).attr("name");
+			console.log(check_user)
+			var card_obj = $(this).parent().parent().siblings(".card_id").find("h3").find("a")
+			console.log(card_obj)
+			var card_id = card_obj.html();
+		$.ajax({
+			type:"POST",
+			url:"/admin/check_user/",
+			data:{"check_user":check_user,"card_id":card_id},
+			dataType:"json",
+			success:function(result){
+				if(result.status=="ok"){
+				window.location.href="/admin/user_list/";
+				}
+				else{
+				alert("username does not match password!!!")
+				}
+			}
+		});
+	});
+	$(".sure").click(function(){
+			var sort = $(".sort").val();
+			var search = $(".search").val()
+			var search_value = $(".search_value").val()
+			var start_time = $(".start_time").val()
+			var end_time = $(".end_time").val()
+			<!-- var page = $("#current_page").val() -->
+			alert(page)
+			window.location.href="/admin/user_list/" + "?sort=" + sort + "&search=" + search	+ "&search_value=" + search_value + "&start_time=" + start_time + "&end_time=" + end_time + "&page=" +page;
+	});
+	$(".page").click(function(){
+			var sort = $(".sort").val();
+			var search = $(".search").val()
+			var search_value = $(".search_value").val()
+			var start_time = $(".start_time").val()
+			var end_time = $(".end_time").val()
+			var page = $(this).val()
+			window.location.href="/admin/user_list/" + "?sort=" + sort + "&search=" + search	+ "&search_value=" + search_value + "&start_time=" + start_time + "&end_time=" + end_time + "&page=" +page;
+	});
+	$(".to_page").click(function(){
+			var sort = $(".sort").val();
+			var search = $(".search").val()
+			var search_value = $(".search_value").val()
+			var start_time = $(".start_time").val()
+			var end_time = $(".end_time").val()
+			var page = $("#to_page").val()
+			window.location.href="/admin/user_list/" + "?sort=" + sort + "&search=" + search	+ "&search_value=" + search_value + "&start_time=" + start_time + "&end_time=" + end_time + "&page=" +page;
+	});
+	</script>
+    </body>
+</html>

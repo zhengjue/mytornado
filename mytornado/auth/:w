@@ -159,6 +159,9 @@ class TransactionHandler(BaseHandler):
             user_id = dao.get_user(login_user).oid
             transaction_list = dao.get_transaction_list_by_user_id(user_id)
             transaction_type_dict = enums.TRANSACTION_TYPE_DICT
+            print "111",transaction_type_dict
+            print "22",transaction_list
+            print "33",user_id
             params = locals()
             params.pop("self")
             self.render("auth/transaction.html", **params)
@@ -172,6 +175,7 @@ class TransactionHandler(BaseHandler):
         ttype = int(self.get_argument("ttype"))
         title = self.get_argument("title")
         content = self.get_argument("content")
+        print user_id, ttype, title,content
         dao.add_transaction(user_id, ttype, title, content)
         self.redirect("/transaction/list/")
 
@@ -195,6 +199,8 @@ class ReviewHandler(BaseHandler):
         for transaction in transaction_list:
             tmp = {}
             user = dao.get_user_by_user_id(transaction.user_id)
+            print transaction.user_id
+            print str(transaction.id)
             tmp['id'] = str(transaction.id)
             tmp["user"] = user.username
             tmp["ttype"] = transaction.ttype
