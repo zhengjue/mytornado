@@ -14,7 +14,7 @@ SECRET_KEY = "MOlWqkvsfsBilrQQWdr/dttN16SX1cL+5KJXaOj9"
 
 settings = dict(
     cookie_secret=SECRET_KEY,
-    login_url="login/",
+    login_url="/login/",
     template_path=os.path.join(os.path.dirname(__file__), "templates"),
     static_path=os.path.join(os.path.dirname(__file__), "static"),
     root_path=os.path.dirname(__file__),

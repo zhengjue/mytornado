@@ -1,0 +1,16 @@
+<html>
+    <head><title>my transaction page</title></head>
+    <body>
+	    <a href="/transaction/add/">创建申请</a>
+	    {% for transaction in transaction_list %}
+	    	    <div style="border:1px solid red;width:400px;">
+			<p>类别: {{gettransaction.get(ttype)}}</p>
+			<hr>
+			<p>标题: {{transaction.get(title)}}</p>
+			<hr>
+			<p>内容: {{transaction.get(content)}}</p>
+		    </div>
+		    <br/>
+	    {% end %}
+    </body>
+</html>
