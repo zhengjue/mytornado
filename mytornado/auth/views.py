@@ -159,6 +159,7 @@ class TransactionHandler(BaseHandler):
             user_id = dao.get_user(login_user).oid
             transaction_list = dao.get_transaction_list_by_user_id(user_id)
             transaction_type_dict = enums.TRANSACTION_TYPE_DICT
+            transaction_status_dict = enums.PROGRESS_DICT
             params = locals()
             params.pop("self")
             self.render("auth/transaction.html", **params)
@@ -167,13 +168,25 @@ class TransactionHandler(BaseHandler):
 
     @tornado.web.authenticated
     def post(self, action):
-        login_user = self.get_current_user()
-        user_id = dao.get_user(login_user).oid
-        ttype = int(self.get_argument("ttype"))
-        title = self.get_argument("title")
-        content = self.get_argument("content")
-        dao.add_transaction(user_id, ttype, title, content)
-        self.redirect("/transaction/list/")
+        if action == "update":
+            transaction_id = self.get_argument("transaction_id", "")
+            title = self.get_argument("title", "")
+            content = self.get_argument("content", "")
+            status = enums.PROGRESS_CREATE
+            attr = {"title": title, "content": content, "status": status}
+            dao.update_transaction_by_id(transaction_id, attr)
+            self.write({"status": "ok"})
+        else:
+            login_user = self.get_current_user()
+            user_id = dao.get_user(login_user).oid
+            ttype = int(self.get_argument("ttype"))
+            title = self.get_argument("title")
+            content = self.get_argument("content")
+            dao.add_transaction(user_id, ttype, title, content)
+            self.redirect("/transaction/list/")
+
+    def check_xsrf_cookie(self):
+        return
 
 
 class ReviewHandler(BaseHandler):
@@ -213,10 +226,11 @@ class ReviewHandler(BaseHandler):
     def post(self):
         transaction_id = self.get_argument("transaction_id", "")
         action = self.get_argument("action", "")
+        reason = self.get_argument("reason", "")
 
         if action == "pass":
             dao.update_transaction_by_id(transaction_id, {"status": 1})
         if action == "nopass":
-            dao.update_transaction_by_id(transaction_id, {"status": 0})
+            dao.update_transaction_by_id(transaction_id, {"status": 0, "reason": reason})
         self.write({"status": "ok"})
 

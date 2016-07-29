@@ -1,16 +1,51 @@
 <html>
     <head><title>my transaction page</title></head>
+    <script type="text/javascript" src="//misc.360buyimg.com/jdf/lib/jquery-1.6.4.js"></script>
     <body>
 	    <a href="/transaction/add/">创建申请</a>
 	    {% for transaction in transaction_list %}
-	    	    <div style="border:1px solid red;width:400px;">
+	    	    <div style="border:1px solid red;width:400px;" >
 			<p>类别: {{transaction_type_dict.get(transaction.ttype)}}</p>
 			<hr>
-			<p>标题: {{transaction.title}}</p>
-			<hr>
-			<p>内容: {{transaction.content}}</p>
+			{% if transaction.status == 0 %}
+				<input type="hidden" class="transaction_id" name="transaction_id" value="{{transaction.id}}"/>
+				<p>标题: <input type="text" class="title" name="title" value="{{transaction.title}}"/></p>
+				<p>内容: <input type="text" class="content" name="content" value="{{transaction.content}}"/></p>
+				<p> <input type="submit" class="submit" value="重新提交"/></p>
+				<hr>
+				<p>状态: {{transaction_status_dict.get(transaction.status)}}</p>
+				<hr>
+				<p>原因: {{transaction.reason}}</p>
+			{% else %}
+				<p>标题: {{transaction.title}}</p>
+				<hr>
+				<p>内容: {{transaction.content}}</p>
+				<hr>
+				<p>状态: {{transaction_status_dict.get(transaction.status)}}</p>
+			{% end %}
 		    </div>
 		    <br/>
 	    {% end %}
+	    <script>
+		$(".submit").click(function(){
+		var transaction_id = $(".transaction_id").val()
+		var title = $(".title").val()
+		var content = $(".content").val()
+		$.ajax({
+			type: 'POST',
+			url: '/transaction/update/' ,
+			data: {'transaction_id': transaction_id, 'title': title, 'content': content},
+			dataType: 'json',
+			success:function(result){
+				if(result.status=='ok') {
+					window.location.href='/transaction/list/';
+				}else{
+					alert('error');
+				}
+			}
+
+			});
+		});
+	    </script>
     </body>
 </html>

@@ -8,16 +8,14 @@
 	</div>
 	<table border='1px' cellspacing='0'>
 		<tr>
-
-			¦<th>类型</th>
-			¦<th>提交人</th>
-			¦<th>标题</th>
-			¦<th>内容</th>
-			¦<th>操作</th>
+			<th>类型</th>
+			<th>提交人</th>
+			<th>标题</th>
+			<th>内容</th>
+			<th>操作</th>
 		</tr>
-
-	    {% for transaction in transaction_list %}
-	    	<tr>
+	{% for transaction in transaction_list %}
+		<tr>
 			<td class='transaction_id' name="{{transaction.get('id') }}">
 			<p>{{transaction_type_dict.get(transaction.get("ttype"))}}</p></td>
 			<td><p>{{ transaction.get('user') }}</p></td>
@@ -29,19 +27,16 @@
 				<input type='button' class='review' value='审核不通过' name='nopass'/>
 			       </p>
 			</td>
-		    <br/>
+		  <br/>
 		</tr>
-	    {% end %}
-
-	 <script>
+	{% end %}
+	<script>
 	$('.review').click(function(){
 	var action = $(this).attr("name");
-
 	if(action=='nopass' && !$(".popup").attr('name')){
 		$(".popup").show();
 		var obj1 = $(this).parent().parent().siblings('.transaction_id');
 		var obj_id1 = obj1.attr('name');
-		alert(obj_id1)
 		$(".popup").attr('name', obj_id1);
 	}
 	else{
@@ -69,11 +64,9 @@
 					alert('error');
 				}
 			}
-
 			});
-     }
-
+     	}
 	});
-	 </script>
+	</script>
     </body>
 </html>
