@@ -108,7 +108,6 @@ class JsLoginHandler(BaseHandler):
     def post(self):
         username = self.get_argument("username", "")
         password = self.get_argument("password", "")
-        print username, password
         user = dao.get_user(username)
         if not user or user.password != md5(password):
             self.write(json.dumps({"status": "fail"}))

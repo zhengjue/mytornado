@@ -1,9 +1,6 @@
 # _*_ coding:utf-8 _*_
 import os
 import sys
-if __name__ == "__main__":
-    sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-
 import hashlib
 import mongoengine
 import settings
@@ -28,9 +25,9 @@ def make_card_id():
     new_id = card_coll.find_and_modify(update={"$inc": {"card_id": 1}}, new=True).get("card_id")
     #  new_id = card_coll.find_and_modify(update={"$inc": {"card_id": 1}}, upsert=True).get("card_id")
     #  new_id = card_coll.find_and_modify(update={"$inc": {"card_id": 1}}, upsert=True)["card_id"]
-    print new_id
     return new_id
 
 if __name__ == "__main__":
+    sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
     #  print md5("11111")
     make_card_id()

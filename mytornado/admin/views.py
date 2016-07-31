@@ -1,8 +1,7 @@
 # _*_ coding:utf-8 _*_
 from base import AdminBaseHandler
-from common.utils import md5, make_card_id
+from common.utils import md5
 from common.paginate import Page
-from admin import dao
 from auth import dao as auth_dao
 from auth import enums as auth_enums
 from datetime import datetime
