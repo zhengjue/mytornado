@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>{% block title %}{% endblock %}</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<!-- Bootstrap core CSS -->
+<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+{% block css %}{% endblock %}
+</head>
+<body>
+	<!-- web头部 -->
+	<div class="pg-header">
+		<!-- logo -->
+		<a href="/" class="digg-logo"></a>
+		<!-- 导航 -->
+		<div class="action-menu">
+			<a href="/all/hot/recent/1" class="tb active">全部</a>
+			<a href="/r/news/hot/1" class="tb">42区</a>
+			<a href="/r/scoff/hot/1" class="tb">段子</a>
+			<a href="/r/pic/hot/1" class="tb">图片</a>
+			<a href="/r/tec/hot/1" class="tb">挨踢1024</a>
+			<a href="/r/ask/hot/1" class="tb">你问我答</a>
+		</div>
+	</div>
+
+	<!-- web body -->
+	<div class="pg-body">
+	{% block body %}{% endblock %}
+	</div>
+
+	<!-- web 底部 -->
+	<div class="pg-footer">
+	</div>
+
+
+
+
+
+	{% block js %}{% endblock %}
+	<!-- Placed at the end of the document so the pages load faster -->
+    	<script src="/static/bootstrap/jquery/jquery-1.11.3.min.js"></script>
+    	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>

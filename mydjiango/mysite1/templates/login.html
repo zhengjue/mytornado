@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>login page</title>
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <form method="POST" action="/web/login/">
+	      <h1 style="color:red;">  {{status}}</h1>
+	<div>username: <input type="text" name="username" /></div>
+	<div>password: <input type="text" name="password" /></div>
+	<div> <input type="submit" name="submit" value="提交" /></div>
+      </form>
+
+    </div> <!-- /container -->
+  </body>
+</html>

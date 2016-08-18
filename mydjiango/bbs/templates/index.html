@@ -1,0 +1,97 @@
+{% extends  "base.html" %}
+{% block title %} index page {% endblock %}
+{% block css %}<link href="/static/css/common.css" rel="stylesheet">{% endblock %}
+{% block body %}
+<div class="body-left">
+	<div class="content-list" id="content-list">
+		{% for item in data %}
+		<div class="item">
+			<div class="part1">
+				<a href="{{ item.url }}">{{item.title}}</a>
+				<span>--{{item.news_type.display}}</span>
+			</div>
+			<div class="part2">{{item.summary}}</div>
+			<div class="part3">
+				<a href="#" onclick="favor(this, {{item.id}});">赞{{item.favor_count}}</a>
+				<a href="#" onclick="Reply(this, {{item.id}});">评论</a>
+				<span>{{item.create_date|date:"Y-m-d H:i:s"}}</span>
+			</div>
+			<div has-input=0 class="part4 hide">
+				<div class="replys">历史评论:</div>
+				<div class="inputs">
+					<label> 请输入回复内容:</label><textarea></textarea>
+					<input type="submit" value="提交" onclick="Submit(this, {{item.id}});">
+				</div>
+
+
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+
+<div class="body-right">
+bbb
+</div>
+{% endblock %}
+
+{% block js %}
+	<script type="text/javascript">
+	function Submit(doc, id){
+		var value = $(doc).prev().val()
+		$.ajax({
+			url:"/app01/addreply/",
+			data:{nid:id,data:value},
+			type:"POST",
+			success:function(callback){
+				var obj = jQuery.parseJSON(callback);
+				if(obj.status==1){
+					var nums = '赞' + obj.data;
+					$(doc).text(nums);
+				}else{
+					alert(obj.error)
+				}
+			}
+		});
+
+	}
+	function favor(doc, id){
+		 //后台点赞+1
+		$.ajax({
+			url:"/app01/addfavor/",
+			data:{nid:id},
+			type:"POST",
+			success:function(callback){
+				var obj = jQuery.parseJSON(callback);
+				if(obj.status==1){
+					var nums = '赞' + obj.data;
+					$(doc).text(nums);
+				}else{
+					alert(obj.error)
+				}
+			}
+		});
+
+	}
+	function Reply(content,id){
+		<!-- $(content).parent().next().first().text("0000") -->
+		$.ajax({
+			url:"/app01/getreply/",
+			data:{nid:id},
+			type:"POST",
+			success:function(callback){
+
+				var obj = jQuery.parseJSON(callback);
+				$.each(obj, function(k,v){
+					temp  = "<div>"+v.id+"--"+v.user__username+"--"+v.content+"--"+v.create_date+"</div>"
+					$(content).parent().next().find(".replys").empty()
+					$(content).parent().next().find(".replys").append(temp)
+				});
+			console.log(callback);
+			}
+		});
+		$(content).parent().next().toggleClass("hide");
+	}
+	</script>
+{% endblock%}
+
