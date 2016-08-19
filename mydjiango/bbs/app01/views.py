@@ -49,19 +49,20 @@ def getreply(request):
 
 
 def addreply(request):
-    result = {"status": 0, "data": "", "error": ""}
-    try:
-        id = request.POST.get("nid")
-        data = request.POST.get("data")
-        new = models.news.objects.get(id=id)
-        models.Reply.objects.create(content=data
-                                    user=xxx,
-                                    new=new)                                    )
-        nums = obj.favor_count + 1
-        obj.favor_count = nums
-        obj.save()
-        result["status"] = 1
-        result["data"] = nums
-    except Exception, e:
-        result["error"] = e.message
-    return HttpResponse(json.dumps(result))
+    return "ok"
+    #  result = {"status": 0, "data": "", "error": ""}
+    #  try:
+        #  id = request.POST.get("nid")
+        #  data = request.POST.get("data")
+        #  new = models.news.objects.get(id=id)
+        #  models.Reply.objects.create(content=data
+                                    #  user=xxx,
+                                    #  new=new)                                    )
+        #  nums = obj.favor_count + 1
+        #  obj.favor_count = nums
+        #  obj.save()
+        #  result["status"] = 1
+        #  result["data"] = nums
+    #  except Exception, e:
+        #  result["error"] = e.message
+    #  return HttpResponse(json.dumps(result))

@@ -107,3 +107,12 @@ a.active{
 	margin-bottom: 13px\9;
 }
 
+/* custem bootstart css */
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+    color: #fff;
+    background-color: #396bb3;
+}
+.navbar-inverse {
+    background-color: #2459a2;
+    border-color: #080808;
+}

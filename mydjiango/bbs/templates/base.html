@@ -3,31 +3,59 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}{% endblock %}</title>
-<meta name="description" content="">
-<meta name="keywords" content="">
 <!-- Bootstrap core CSS -->
 <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 {% block css %}{% endblock %}
 </head>
 <body>
-	<!-- web头部 -->
-	<div class="pg-header">
-		<!-- logo -->
-		<a href="/" class="digg-logo"></a>
-		<!-- 导航 -->
-		<div class="action-menu">
-			<a href="/all/hot/recent/1" class="tb active">全部</a>
-			<a href="/r/news/hot/1" class="tb">42区</a>
-			<a href="/r/scoff/hot/1" class="tb">段子</a>
-			<a href="/r/pic/hot/1" class="tb">图片</a>
-			<a href="/r/tec/hot/1" class="tb">挨踢1024</a>
-			<a href="/r/ask/hot/1" class="tb">你问我答</a>
+	<!-- web导航头部 -->
+	<nav class="navbar navbar-inverse navbar-fixed-top " role="navigation">
+	      <div class="container">
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+			aria-expanded="false" aria-controls="navbar">
+		    <span class="sr-only">Toggle navigation</span>
+		    <span class="icon-bar"></span>
+		    <span class="icon-bar"></span>
+		    <span class="icon-bar"></span>
+		  </button>
+		  <!-- <a class="navbar-brand" href="#">Project name</a> -->
+		  <a href="/" class="digg-logo"></a>
 		</div>
-	</div>
+		<div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+		  <ul class="nav navbar-nav">
+		    <li class="active"><a href="#">Home</a></li>
+		    <li><a href="#about">About</a></li>
+		    <li><a href="#contact">Contact</a></li>
+		    <li class="dropdown">
+		      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+			      aria-expanded="false">
+			      Dropdown <span class="caret"></span>
+		      </a>
+		      <ul class="dropdown-menu">
+			<li><a href="#">Action</a></li>
+			<li><a href="#">Another action</a></li>
+			<li><a href="#">Something else here</a></li>
+			<li role="separator" class="divider"></li>
+			<li class="dropdown-header">Nav header</li>
+			<li><a href="#">Separated link</a></li>
+			<li><a href="#">One more separated link</a></li>
+		      </ul>
+		    </li>
+		  </ul>
+		  <ul class="nav navbar-nav navbar-right">
+		    <li><a href="../navbar/">Default</a></li>
+		    <li><a href="../navbar-static-top/">Static top</a></li>
+		    <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li>
+		  </ul>
+		</div><!--/.nav-collapse -->
+	      </div>
+	</nav>
 
 	<!-- web body -->
-	<div class="pg-body">
+	<div class="container">
 	{% block body %}{% endblock %}
 	</div>
 

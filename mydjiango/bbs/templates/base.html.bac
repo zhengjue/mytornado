@@ -1,51 +1,48 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="/static/images/favicon.ico">
-
-    <title>{% block title %} {% endblock %}</title>
-    <!-- Bootstrap core CSS -->
-    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    {% block css %} {% endblock %}
-
-  </head>
-
-  <body>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-	<div class="">
-	<img src="/static/images/logo.png">
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>{% block title %}{% endblock %}</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<!-- Bootstrap core CSS -->
+<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+{% block css %}{% endblock %}
+</head>
+<body>
+	<!-- web头部 -->
+	<div class="pg-header">
+		<!-- logo -->
+		<a href="/" class="digg-logo"></a>
+		<!-- 导航 -->
+		<div class="action-menu">
+			<a href="/all/hot/recent/1" class="tb active">全部</a>
+			<a href="/r/news/hot/1" class="tb">42区</a>
+			<a href="/r/scoff/hot/1" class="tb">段子</a>
+			<a href="/r/pic/hot/1" class="tb">图片</a>
+			<a href="/r/tec/hot/1" class="tb">挨踢1024</a>
+			<a href="/r/ask/hot/1" class="tb">你问我答</a>
+		</div>
 	</div>
-      <div class="container">
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+
+	<!-- web body -->
+	<div class="pg-body">
+	{% block body %}{% endblock %}
+	</div>
+
+	<!-- web 底部 -->
+	<div class="pg-footer">
+	</div>
 
 
-    <footer class="blog-footer">
-	{% block footer %} {% endblock %}
-    </footer>
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/static/bootstrap/jquery/jquery-1.11.3.min.js"></script>
-    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 
-  </body>
+	{% block js %}{% endblock %}
+	<!-- Placed at the end of the document so the pages load faster -->
+    	<script src="/static/bootstrap/jquery/jquery-1.11.3.min.js"></script>
+    	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
 </html>
