@@ -13,14 +13,14 @@
 			<div class="part2">{{item.summary}}</div>
 			<div class="part3">
 				<a href="#" onclick="favor(this, {{item.id}});">赞{{item.favor_count}}</a>
-				<a href="#" onclick="Reply(this, {{item.id}});">评论</a>
+				<a href="#" class="reply"  onclick="Reply(this, {{item.id}});">评论{{item.reply_count}}</a>
 				<span>{{item.create_date|date:"Y-m-d H:i:s"}}</span>
 			</div>
-			<div has-input=0 class="part4 hide">
+			<div has-input=0 class="part4 hide comment-box">
 				<div class="replys">历史评论:</div>
 				<div class="inputs">
 					<label> 请输入回复内容:</label><textarea></textarea>
-					<input type="submit" value="提交" onclick="Submit(this, {{item.id}});">
+					<input type="submit" value="提交" onclick="reply_submit(this, {{item.id}});">
 				</div>
 
 
@@ -31,32 +31,137 @@
 </div>
 
 <div class="body-right">
-bbb
+		<div class="chat-box">
+			<div class="chat-main-header">
+				<div class="tab-public active" style="width:100%;border-top-radius:4px;">公共聊天</div>
+			</div>
+			<div class="chat-public-box">
+				<div id="msgbox" class="chat-public-content"></div>
+				<div class="chat-sender">
+					<div class="inputer">
+						<textarea id="message" name="text" style="height:100%;width: 80%;"></textarea>
+						<div class="btn btn-primary btn-send" onclick="SendMsg();" >发送</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+
 {% endblock %}
 
 {% block js %}
 	<script type="text/javascript">
-	function Submit(doc, id){
+	function SendMsg(){
+		var values = $("#message").val();
+		$("#message").val("");
+		$.ajax({
+			url:"/app01/addmsg/",
+			data:{data:values},
+			type:"POST",
+			success:function(callback){
+				var obj = jQuery.parseJSON(callback);
+				if(obj.status==1){
+					var name = obj.data.username
+					var now_time = obj.data.create_date
+					temp = "<div><div>"+name+ " "+ now_time +" </div><div>"+ values+ "</div></div>"
+					window.last_id = obj.data.id
+					<!-- console.log(last_id) -->
+					$("#msgbox").append(temp);
+				}else{
+					alert(obj.error)
+				}
+				var height = document.getElementById('msgbox').scrollHeight
+				$("#msgbox").scrollTop(height)
+
+			}
+		});
+
+	}
+
+<!-- 循环输出消息 -->
+	setInterval("GetChat()", 2000);
+	window.is_first = true;
+	function GetChat(){
+		if(window.is_first){
+			$.ajax({
+				url:"/app01/getchat/",
+				type:"POST",
+				success:function(callback){
+					var obj = jQuery.parseJSON(callback);
+					window.last_id = obj[0].id
+					<!-- console.log(last_id) -->
+					obj = obj.reverse()
+					$.each(obj, function(k,v){
+						var values = v.content
+						var name = v.user__username
+						var now_time = v.create_date
+						var temp = "<div><div>"+name+ " "+ now_time +" </div><div>"+ values+ "</div></div>"
+						$("#msgbox").append(temp);
+
+					});
+					window.is_first = false;
+					var height = document.getElementById('msgbox').scrollHeight
+					$("#msgbox").scrollTop(height)
+				}
+			});
+		}else{
+			$.ajax({
+				url:"/app01/getchat2/",
+				data:{last_id:window.last_id},
+				type:"POST",
+				success:function(callback){
+					var obj = jQuery.parseJSON(callback);
+					<!-- console.log(obj) -->
+					if(obj.length > 0){
+						window.last_id = obj[obj.length-1].id
+						console.log(last_id)
+						obj = obj.reverse()
+						$.each(obj, function(k,v){
+							var values = v.content
+							var name = v.user__username
+							var now_time = v.create_date
+							var temp = "<div><div>"+name+ " "+ now_time +" </div><div>"+ values+ "</div></div>"
+							$("#msgbox").append(temp);
+
+						});
+					}
+					var height = document.getElementById('msgbox').scrollHeight
+					$("#msgbox").scrollTop(height)
+				}
+			});
+
+		}
+
+	};
+
+	function reply_submit(doc, id){
 		var value = $(doc).prev().val()
+		$(doc).prev().val("")
+		$("#shade loading").removeClass("hide");
 		$.ajax({
 			url:"/app01/addreply/",
 			data:{nid:id,data:value},
 			type:"POST",
 			success:function(callback){
 				var obj = jQuery.parseJSON(callback);
+				console.log(obj)
 				if(obj.status==1){
-					var nums = '赞' + obj.data;
-					$(doc).text(nums);
+					var temp  = "<div>"+obj.data.id+"--"+obj.data.user_username+"--"+obj.data.content+"--"+obj.data.create_date+"</div>"
+					$(doc).parent().prev().append(temp)
+					var count = "评论"+obj.data.reply_count
+					$(doc).parent().parent().prev().find(".reply").text(count);
+
 				}else{
 					alert(obj.error)
 				}
+				$("#shade loading").addClass("hide");
 			}
 		});
 
 	}
 	function favor(doc, id){
-		 //后台点赞+1
+		<!-- 后台点赞+1 -->
 		$.ajax({
 			url:"/app01/addfavor/",
 			data:{nid:id},
@@ -82,16 +187,20 @@ bbb
 			success:function(callback){
 
 				var obj = jQuery.parseJSON(callback);
+				$(content).parent().next().find(".replys").empty()
 				$.each(obj, function(k,v){
 					temp  = "<div>"+v.id+"--"+v.user__username+"--"+v.content+"--"+v.create_date+"</div>"
-					$(content).parent().next().find(".replys").empty()
 					$(content).parent().next().find(".replys").append(temp)
 				});
-			console.log(callback);
 			}
 		});
 		$(content).parent().next().toggleClass("hide");
 	}
+	<!-- 导航条切换 -->
+	$("#navbar-nav li").click(function(){
+		$(this).siblings().removeClass('active');
+		$(this).addClass('active');
+	});
 	</script>
 {% endblock%}
 

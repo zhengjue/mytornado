@@ -1,7 +1,14 @@
 body{
 	margin:0;
 	padding: 0;
+	padding-top:50px;
+	background-color: #fff;
 }
+/* body { */
+  /* padding-top: 40px; */
+  /* padding-bottom: 40px; */
+  /* background-color: #eee; */
+/* } */
 
 a{
 	text-decoration: none;
@@ -69,6 +76,60 @@ a.active{
 	padding-top: 4px;
 	float: right;
 }
+.chat-box {
+    position: relative;
+    width: 298px;
+    height: 480px;
+    border-radius: 4px;
+    border: 1px solid #d9edf7;
+    background: #f9f9f9;
+}
+.chat-main-header {
+    position: relative;
+}
+.chat-main-header div.active {
+    color: #4b4f53;
+    background: #F9F9F9;
+    text-align: center;
+    font-size: 20px;
+    display: inline-block;
+    cursor: pointer;
+    height: 25px;
+    line-height: 25px;
+    position: absolute;
+    top: 0;
+}
+.chat-public-box {
+    position: absolute;
+    top: 25px;
+    width: 100%;
+    height: 455px;
+}
+.chat-public-content {
+    height: 369px;
+    overflow-y: auto;
+}
+.chat-box .chat-sender {
+    height: 85px;
+    position: relative;
+    border-top: 1px #d9edf7 solid;
+}
+.chat-box .chat-sender .inputer {
+    height: 100%;
+}
+.btn-send {
+	margin-bottom:29px;
+
+}
+msg{
+	display:inline;
+}
+submit{
+	display:inline;
+}
+left{
+float:left;
+}
 .content-list {
     position: relative;
 }
@@ -102,10 +163,19 @@ a.active{
 .content-list .item .part4{
 	padding-top: 6px;
 	padding-top: 5px\9;
-	color: #ccc;
+	color: black;
+
 	margin-bottom: 12px;
 	margin-bottom: 13px\9;
 }
+.comment-box {
+    border: 1px solid #cbdcee;
+    background-color: #f6f6f6;
+    padding: 12px 15px 0;
+    margin-bottom: 12px;
+    width: 598px;
+}
+
 
 /* custem bootstart css */
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
@@ -115,4 +185,76 @@ a.active{
 .navbar-inverse {
     background-color: #2459a2;
     border-color: #080808;
+}
+.navbar-fixed-top {
+    z-index: 800;
+}
+
+
+/* custom login css */
+
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+    padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* 遮罩层 和 加载层 */
+#shade{
+	background-color:gray;
+	height:100%;
+	width:100%;
+	left:0;
+	opacity:0.5;
+	position:absolute;
+	top:0;
+	z-index:900;
+	filter:alpha(opacity=50);
+	-moz-opacity:0.5;
+	-khtml-opacity:0.5;
+}
+#loading{
+	background-color:#fff;
+	border:5px solid rgba(0,0,0, 0.4);
+	height:400px;
+	left:50%;
+	margin:-200px 0 0 -200px;
+	padding:1px;
+	position:fixed !important; /* 浮动对话框 */
+	position:absolute;
+	top:50%;
+	width:400px;
+	z-index:901;
+	border-radius:5px;
+	display:none;
 }
