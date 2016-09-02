@@ -1,3 +1,4 @@
+# _*_ coding:utf-8 _*_
 """
 Django settings for OMServer project.
 
@@ -15,6 +16,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+SYSTEM_NAME="OMserver 自动化运维平台 V1.0 beta"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -37,7 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app01',
+    #  'debug_toolbar',
+    #  'app01',
+    #  'public',
+    'autoadmin',
+    #  'omaudit',
+    #  'demo',
 ]
 
 MIDDLEWARE = [
@@ -48,7 +55,20 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #  'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+#  DEBUG_TOOLBAR_PANELS = (
+#  'debug_toolbar.panels.version.VersionDebugPanel',
+#  'debug_toolbar.panels.timer.TimerDebugPanel',
+#  'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+#  'debug_toolbar.panels.headers.HeaderDebugPanel',
+#  'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+#  'debug_toolbar.panels.template.TemplateDebugPanel',
+#  'debug_toolbar.panels.sql.SQLDebugPanel',
+#  'debug_toolbar.panels.signals.SignalDebugPanel',
+#  'debug_toolbar.panels.logger.LoggingPanel',
+#  )
 
 ROOT_URLCONF = 'OMServer.urls'
 
@@ -123,6 +143,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-STARTCONFILE_DIRS = [
+STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+    #  '/usr/local/python/lib/python2.7/site-packages/django_debug_toolbar-0.8.5-py2.7.egg/debug_toolbar/templates/',
                      ]
