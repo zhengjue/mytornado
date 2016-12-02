@@ -286,7 +286,9 @@ def getuser():
         LEFT OUTER JOIN department as D on U.department=D.id
     """
     userlist = readDb(sql,)
+    print json.dumps(userlist)
     return json.dumps(userlist)
+
 
 @route('/taskinfo')
 @checkLogin

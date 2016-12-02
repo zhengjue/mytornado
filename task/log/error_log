@@ -251,3 +251,13 @@
 2016-10-11 11:09:09 main.py[line:97] ERROR 数据执行失败:not all arguments converted during string formatting
 2016-10-12 13:25:59 main.py[line:97] ERROR 数据执行失败:'long' object is not iterable
 2016-10-12 13:26:02 main.py[line:97] ERROR 数据执行失败:'long' object is not iterable
+2016-10-14 13:45:55 main.py[line:97] ERROR 数据执行失败:'long' object is not iterable
+2016-10-14 13:58:56 main.py[line:97] ERROR 数据执行失败:'long' object is not iterable
+2016-10-14 13:59:06 main.py[line:97] ERROR 数据执行失败:'long' object is not iterable
+2016-10-14 14:44:09 main.py[line:97] ERROR 数据执行失败:'long' object is not iterable
+2016-10-19 11:37:00 main.py[line:97] ERROR 数据执行失败:'long' object is not iterable
+2016-10-19 11:37:03 main.py[line:97] ERROR 数据执行失败:'long' object is not iterable
+2016-10-19 11:37:53 main.py[line:97] ERROR 数据执行失败:'long' object is not iterable
+2016-11-17 13:59:43 main.py[line:97] ERROR 数据执行失败:'long' object is not iterable
+2016-11-17 14:09:15 main.py[line:97] ERROR 数据执行失败:'long' object is not iterable
+2016-11-17 14:09:28 main.py[line:97] ERROR 数据执行失败:'long' object is not iterable

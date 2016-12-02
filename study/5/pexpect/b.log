@@ -1,0 +1,10 @@
+root@192.168.1.146's password: centos
+
+Last login: Thu Dec  1 00:40:33 2016 from 192.168.10.100
+]0;root@146-test:~[?1034h[root@146-test ~]#  tar -czf /var/log/boot.log.tar.gz /var/log/boot.log
+ tar -czf /var/log/boot.log.tar.gz /var/log/boot.log
+tar: Removing leading `/' from member names
+]0;root@146-test:~[root@146-test ~]# exit
+root@192.168.1.146's password: centos
+
+boot.log.tar.gz                                 0%    0     0.0KB/s   --:-- ETAboot.log.tar.gz                               100%  711     0.7KB/s   00:00    

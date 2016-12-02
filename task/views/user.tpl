@@ -18,7 +18,7 @@
                             <i class="fa fa-times"></i>
                         </a>
                     </div>
-                    
+
                 </div><!--Widget Header-->
                 <div style="padding:-10px 0px;" class="widget-body no-padding">
                     <div class="tickets-container">
@@ -105,7 +105,7 @@
                 <br></br>
                 <input type="hidden" id="hidInput" value="">
                 <button type="button" id="subBtn" class="btn btn-primary  btn-sm">提交</button>
-                <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">关闭</button> 
+                <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">关闭</button>
              </form>
             </div>
          </div>
@@ -141,7 +141,7 @@ $(function(){
           sortName: 'id',
           columns: [{
               field: 'bianhao',
-              title: 'checkbox',      
+              title: 'checkbox',
               checkbox: true,
           },{
               field: 'id',
@@ -278,9 +278,9 @@ $(function(){
            var sex = $('#sex').val();
            var qq = $('#qq').val();
            var email = $('#email').val();
-           var department = $('#department').val(); 
-           var phone = $('#phone').val(); 
-           var access = $('#access').val(); 
+           var department = $('#department').val();
+           var phone = $('#phone').val();
+           var access = $('#access').val();
            var postUrl;
            if(isEdit==1){
                 postUrl = "/changeuser/"+editId;           //修改路径
@@ -292,7 +292,7 @@ $(function(){
                   if(data==0){
                     $('#myModal').modal('hide');
                     $('#myLoadTable').bootstrapTable('refresh');
-                    message.message_show(200,200,'成功','操作成功');   
+                    message.message_show(200,200,'成功','操作成功');
                   }else if(data==-1){
                       message.message_show(200,200,'失败','操作失败');
                   }else{
@@ -303,7 +303,7 @@ $(function(){
 
         /**
         *删除按钮操作
-        */        
+        */
     $('#deluser').popover({
                 html: true,
                 container: 'body',
@@ -328,10 +328,10 @@ $(function(){
                     }else{
                         message.message_show(200,200,'失败','删除失败');
                     }
-                },'html');  
-                
+                },'html');
+
             }
         });
-        
+
 })
 </script>
