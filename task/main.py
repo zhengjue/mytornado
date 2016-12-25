@@ -1,6 +1,13 @@
 #!/usr/bin/env python
+<<<<<<< HEAD
 #_*_ coding:utf-8 _*_
 
+=======
+# _*_ coding:utf-8 _*_
+#更多内容请参考博客：http://www.linuxyw.com
+#戴儒锋
+#63780668@qq.com
+>>>>>>> eb8395195839b12ba73dfb9dba904ca9ff520595
 import os,sys,json
 from bottle import request,route,error,run,default_app
 from bottle import template,static_file,redirect,abort
@@ -18,11 +25,19 @@ monkey.patch_all()
 db_name = 'task'
 db_user = 'root'
 db_pass = 'centos'
+<<<<<<< HEAD
 db_ip = 'localhost'
 db_port = 3306
 
 
 # 获取本脚本所在的路径
+=======
+db_ip = '127.0.0.1'
+db_port = 3306
+
+
+#获取本脚本所在的路径
+>>>>>>> eb8395195839b12ba73dfb9dba904ca9ff520595
 pro_path = os.path.split(os.path.realpath(__file__))[0]
 sys.path.append(pro_path)
 
@@ -154,14 +169,22 @@ def index():
     return template('index',message='')
 
 @route('/user')
+<<<<<<< HEAD
 @checkAccess
+=======
+#@checkAccess
+>>>>>>> eb8395195839b12ba73dfb9dba904ca9ff520595
 def user():
     department_sql = "select id,name from department;"
     department_result = readDb(department_sql,)
     return template('user',department_result=department_result)
 
 @route('/adduser',method="POST")
+<<<<<<< HEAD
 @checkAccess
+=======
+#@checkAccess
+>>>>>>> eb8395195839b12ba73dfb9dba904ca9ff520595
 def adduser():
     name = request.forms.get("name")
     username = request.forms.get("username")
@@ -284,8 +307,15 @@ def getuser():
         LEFT OUTER JOIN department as D on U.department=D.id
     """
     userlist = readDb(sql,)
+<<<<<<< HEAD
     return json.dumps(userlist)
 
+=======
+    print json.dumps(userlist)
+    return json.dumps(userlist)
+
+
+>>>>>>> eb8395195839b12ba73dfb9dba904ca9ff520595
 @route('/taskinfo')
 @checkLogin
 def taskinfo():
