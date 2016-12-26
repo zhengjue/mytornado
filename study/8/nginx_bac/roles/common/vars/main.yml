@@ -1,0 +1,4 @@
+---
+# Variables listed here are  application to all host  groups
+ntpserver: 202.120.2.101
+

@@ -1,0 +1,4 @@
+---
+# Varibales listed here are application to all hosts groups
+ntpserver: ntp.sjtu.edu.cn
+

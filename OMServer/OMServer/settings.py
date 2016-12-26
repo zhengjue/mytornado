@@ -27,7 +27,7 @@ SECRET_KEY = '32$ua2uby2j!$@g&92etv*%$qc_1pg(8n+fc!5cjyinkwwzu)%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,10 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #  'debug_toolbar',
     #  'app01',
-    #  'public',
+    'public',
     'autoadmin',
-    #  'omaudit',
-    #  'demo',
+    'omaudit',
+    'demo',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,16 @@
+#web
+[webservers]
+192.168.1.146
+192.168.1.147
+
+#db
+[dbservers]
+192.168.1.145
+
+#lb
+[lbservers]
+192.168.1.144
+
+#nagios
+[monitoring]
+192.168.1.143
